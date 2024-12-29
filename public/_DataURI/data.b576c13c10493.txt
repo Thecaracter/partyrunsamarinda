@@ -1,0 +1,1 @@
+chrome-extension://fnjhmkhhmkbjkkabndcnnogagogbneec/assets/js/@ledgerhq/hw-transport-webhid.CsSS0voT.js
