@@ -98,6 +98,43 @@
 
         <!-- Main Content -->
         <main class="pt-20 md:pt-24">
+            <!-- Flash Messages -->
+            @if (session('success'))
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg">
+                        <p class="font-bold">Sukses!</p>
+                        <p>{{ session('success') }}</p>
+                    </div>
+                </div>
+            @endif
+
+            @if (session('warning'))
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg">
+                        <p class="font-bold">Perhatian!</p>
+                        <p>{{ session('warning') }}</p>
+                    </div>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg">
+                        <p class="font-bold">Error!</p>
+                        <p>{{ session('error') }}</p>
+                    </div>
+                </div>
+            @endif
+
+            @if (session('message'))
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
+                    <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg">
+                        <p class="font-bold">Informasi</p>
+                        <p>{{ session('message') }}</p>
+                    </div>
+                </div>
+            @endif
+
             @yield('content')
         </main>
 

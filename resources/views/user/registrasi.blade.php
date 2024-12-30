@@ -1,6 +1,66 @@
 @extends('layouts.applanding')
 
 @section('content')
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+    <!-- Fixed Position Flash Messages -->
+    <div class="fixed left-4 bottom-4 z-50 space-y-4 w-80">
+        @if (session('success'))
+            <div class="bg-green-100 text-green-800 p-4 rounded-lg flex items-center shadow-lg animate-fade-in">
+                <i class="fas fa-check-circle text-xl mr-2"></i>
+                <div>
+                    <p class="font-bold">Berhasil!</p>
+                    <p class="text-sm">{{ session('success') }}</p>
+                </div>
+            </div>
+        @endif
+
+        @if (session('warning'))
+            <div class="bg-yellow-100 text-yellow-800 p-4 rounded-lg flex items-center shadow-lg animate-fade-in">
+                <i class="fas fa-exclamation-circle text-xl mr-2"></i>
+                <div>
+                    <p class="font-bold">Perhatian!</p>
+                    <p class="text-sm">{{ session('warning') }}</p>
+                </div>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="bg-red-100 text-red-800 p-4 rounded-lg flex items-center shadow-lg animate-fade-in">
+                <i class="fas fa-times-circle text-xl mr-2"></i>
+                <div>
+                    <p class="font-bold">Error!</p>
+                    <p class="text-sm">{{ session('error') }}</p>
+                </div>
+            </div>
+        @endif
+
+        <!-- JavaScript Alert Container -->
+        <div id="alertContainer" style="display: none;">
+            <div class="bg-red-100 text-red-800 p-4 rounded-lg flex items-center shadow-lg animate-fade-in">
+                <i class="fas fa-exclamation-circle text-xl mr-2"></i>
+                <div>
+                    <p class="font-bold">Perhatian!</p>
+                    <p class="text-sm" id="alertMessage"></p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="pt-28 min-h-screen bg-gradient-to-br from-pink-500 to-pink-400 py-12 px-4 sm:px-6 lg:px-8">
         <!-- Alert Container -->
         <div id="alertContainer" class="max-w-4xl mx-auto mb-4" style="display: none;">
@@ -704,7 +764,6 @@
                 });
             });
 
-            // Load saved data if exists
             const step1Data = sessionStorage.getItem('step1Data');
             if (step1Data) {
                 const data = JSON.parse(step1Data);
@@ -714,5 +773,27 @@
                 }
             }
         });
+
+        function showAlert(message) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertMessage = document.getElementById('alertMessage');
+
+            // Reset animation
+            alertContainer.classList.remove('animate-fade-in');
+            void alertContainer.offsetWidth; // Trigger reflow
+            alertContainer.classList.add('animate-fade-in');
+
+            alertMessage.textContent = message;
+            alertContainer.style.display = 'block';
+
+            // Auto hide setelah 5 detik
+            setTimeout(() => {
+                alertContainer.style.opacity = '0';
+                setTimeout(() => {
+                    alertContainer.style.display = 'none';
+                    alertContainer.style.opacity = '1';
+                }, 300);
+            }, 5000);
+        }
     </script>
 @endpush
