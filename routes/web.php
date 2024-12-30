@@ -2,7 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\BibController;
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\User\PaymentController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\User\CheckOrderController;
 use App\Http\Controllers\User\RegistrasiController;
 
@@ -37,5 +40,23 @@ Route::prefix('payment')->group(function () {
 });
 
 Route::get('/check-order', [CheckOrderController::class, 'index'])->name('check-order.index');
-
 Route::get('/bib/{peserta}', [BibController::class, 'show'])->name('bib.show');
+
+// Admin Routes
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    // Auth Routes
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Protected Admin Routes
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // Size Management Routes
+        Route::get('/sizes', [SizeController::class, 'index'])->name('sizes.index');
+        Route::post('/sizes', [SizeController::class, 'store'])->name('sizes.store');
+        Route::put('/sizes/{size}', [SizeController::class, 'update'])->name('sizes.update');
+        Route::delete('/sizes/{size}', [SizeController::class, 'destroy'])->name('sizes.destroy');
+    });
+});
