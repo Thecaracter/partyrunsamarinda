@@ -283,14 +283,6 @@
             }
         }
 
-        @media (max-width: 639px) {
-
-            .camera-controls button:last-child,
-            .preview-controls button:last-child {
-                display: none;
-            }
-        }
-
         /* Tabs Styling */
         .tab-btn {
             border-bottom-width: 2px;
@@ -364,7 +356,6 @@
     <div class="min-h-screen bg-gray-50 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header -->
-            <!-- Header -->
             <div class="mb-4 sm:mb-8">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <div class="min-w-0 flex-1">
@@ -398,7 +389,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Camera Controls - Desktop only -->
+                                <!-- Desktop Camera Controls -->
                                 <div
                                     class="hidden sm:flex absolute bottom-0 inset-x-0 items-center justify-center p-6 bg-gradient-to-t from-black/70 to-transparent">
                                     <div class="flex gap-4">
@@ -414,11 +405,23 @@
                                 </div>
                             </div>
 
-                            <!-- Camera Controls - Mobile only -->
-                            <div class="flex sm:hidden gap-2 px-2">
+                            <!-- Mobile Camera Controls -->
+                            <div class="flex flex-col sm:hidden gap-2 px-2">
                                 <button onclick="switchCamera()"
-                                    class="w-full py-2.5 px-4 bg-white text-gray-900 rounded-lg border border-gray-300 shadow-sm hover:bg-gray-50 transition-colors text-sm font-medium">
+                                    class="w-full py-2.5 px-4 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-lg shadow-sm hover:from-blue-500 hover:to-blue-700 transition-colors text-sm font-medium">
                                     <i class="fas fa-camera-rotate mr-2"></i> Ganti Kamera
+                                </button>
+                                <button onclick="capturePhoto()"
+                                    class="w-full py-2.5 px-4 bg-gradient-to-r from-emerald-400 to-emerald-600 text-white rounded-lg shadow-sm hover:from-emerald-500 hover:to-emerald-700 transition-colors text-sm font-medium">
+                                    <i class="fas fa-camera mr-2"></i> Ambil Foto
+                                </button>
+                                <button onclick="retakePhoto()"
+                                    class="w-full py-2.5 px-4 bg-gradient-to-r from-rose-400 to-rose-600 text-white rounded-lg shadow-sm hover:from-rose-500 hover:to-rose-700 transition-colors text-sm font-medium">
+                                    <i class="fas fa-arrow-rotate-left mr-2"></i> Ambil Ulang
+                                </button>
+                                <button onclick="scanQR()"
+                                    class="w-full py-2.5 px-4 bg-gradient-to-r from-amber-400 to-amber-600 text-white rounded-lg shadow-sm hover:from-amber-500 hover:to-amber-700 transition-colors text-sm font-medium">
+                                    <i class="fas fa-qrcode mr-2"></i> Scan QR
                                 </button>
                             </div>
 
@@ -427,7 +430,7 @@
                                 <img id="capturedImage" src="" alt="Captured QR"
                                     class="w-full h-full object-contain">
 
-                                <!-- Preview Controls - Desktop -->
+                                <!-- Desktop Preview Controls -->
                                 <div
                                     class="hidden sm:flex absolute bottom-0 inset-x-0 items-center justify-center p-6 bg-gradient-to-t from-black/70 to-transparent">
                                     <div class="flex gap-4">
@@ -442,8 +445,8 @@
                                     </div>
                                 </div>
 
-                                <!-- Preview Controls - Mobile -->
-                                <div class="sm:hidden mt-4 flex flex-col gap-2 px-2">
+                                <!-- Mobile Preview Controls -->
+                                <div class="flex sm:hidden mt-4 flex-col gap-2 px-2">
                                     <button onclick="retakePhoto()"
                                         class="w-full py-2.5 px-4 bg-white text-gray-900 rounded-lg border border-gray-300 shadow-sm hover:bg-gray-50 transition-colors text-sm font-medium">
                                         <i class="fas fa-arrow-rotate-left mr-2"></i> Ambil Ulang
@@ -458,6 +461,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Participant Tables Section -->
             <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div class="px-4 sm:px-6 lg:px-8 py-6">
@@ -858,6 +862,7 @@
 
             document.getElementById('cameraView').style.display = 'none';
             document.getElementById('previewView').style.display = 'block';
+
         }
 
         function retakePhoto() {
@@ -1015,11 +1020,11 @@
                                 </div>
                             </div>
                             ${data.check_in_time ? `
-                                                                                        <div>
-                                                                                            <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                                            <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
-                                                                                        </div>
-                                                                                    ` : ''}
+                                                                                                                                                    <div>
+                                                                                                                                                        <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                                                                                        <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
+                                                                                                                                                    </div>
+                                                                                                                                                ` : ''}
                         </div>
 
                         <!-- Informasi Medis -->
@@ -1209,11 +1214,11 @@
                         </div>
                     </div>
                     ${participant.check_in_time ? `
-                                                                                    <div>
-                                                                                        <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                                        <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
-                                                                                    </div>
-                                                                                ` : ''}
+                                                                                                                                                <div>
+                                                                                                                                                    <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                                                                                    <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
+                                                                                                                                                </div>
+                                                                                                                                            ` : ''}
                 </div>
 
                 <!-- Informasi Medis -->
