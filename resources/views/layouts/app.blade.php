@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Party Run Admin - @yield('title')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=()">
 </head>
 
 <body class="h-full">

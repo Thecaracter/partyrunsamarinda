@@ -679,8 +679,26 @@
 
         async function startCamera() {
             try {
+                // Cek apakah browser mendukung getUserMedia dengan cara yang lebih spesifik
+                if (!navigator?.mediaDevices?.getUserMedia && !navigator?.getUserMedia && !navigator
+                    ?.webkitGetUserMedia && !navigator?.mozGetUserMedia) {
+                    throw new Error('Browser anda tidak mendukung akses kamera');
+                }
+
+                // Gunakan constraints yang lebih sederhana untuk mobile
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator
+                    .userAgent);
+
                 const constraints = {
-                    video: {
+                    video: isMobile ? {
+                        facingMode: currentCamera,
+                        width: {
+                            ideal: 1280
+                        },
+                        height: {
+                            ideal: 720
+                        }
+                    } : {
                         facingMode: currentCamera,
                         width: {
                             min: 640,
@@ -699,25 +717,122 @@
                     currentStream.getTracks().forEach(track => track.stop());
                 }
 
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                let stream;
+
+                // Gunakan legacy API jika getUserMedia tidak tersedia
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    stream = await navigator.mediaDevices.getUserMedia(constraints);
+                } else {
+                    const getUserMedia = navigator.getUserMedia ||
+                        navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia;
+
+                    if (!getUserMedia) {
+                        throw new Error('Browser anda tidak mendukung akses kamera');
+                    }
+
+                    stream = await new Promise((resolve, reject) => {
+                        getUserMedia.call(navigator, constraints, resolve, reject);
+                    });
+                }
+
                 currentStream = stream;
                 if (video) {
                     video.srcObject = stream;
-                    await video.play();
+                    try {
+                        await video.play();
+                    } catch (playError) {
+                        console.error('Error playing video:', playError);
+                        // Tetap lanjutkan karena beberapa browser mungkin tidak memerlukan play()
+                    }
                 }
 
                 document.getElementById('cameraView').style.display = 'block';
                 document.getElementById('previewView').style.display = 'none';
-            } catch (error) {
-                console.error('Error starting camera:', error);
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Gagal memulai kamera. Pastikan kamera diizinkan dan perangkat mendukung.',
-                    icon: 'error'
-                });
+
+            } catch (err) {
+                console.error('Camera error:', err);
+
+                // Handle specific permission errors
+                if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                    Swal.fire({
+                        title: 'Akses Kamera Ditolak',
+                        html: `
+                    <p class="mb-4">Mohon izinkan akses kamera untuk menggunakan fitur scan.</p>
+                    <div class="text-left text-sm">
+                        <p class="mb-2">Cara mengizinkan akses kamera:</p>
+                        <ol class="list-decimal pl-4">
+                            <li>Klik icon 🔒/🔐 di address bar browser</li>
+                            <li>Cari pengaturan "Kamera"</li>
+                            <li>Pilih "Izinkan"</li>
+                            <li>Refresh halaman ini</li>
+                        </ol>
+                    </div>
+                `,
+                        icon: 'warning',
+                        confirmButtonText: 'Mengerti',
+                        confirmButtonColor: '#9333ea'
+                    });
+                } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+                    Swal.fire({
+                        title: 'Kamera Tidak Ditemukan',
+                        text: 'Pastikan perangkat anda memiliki kamera yang berfungsi.',
+                        icon: 'error',
+                        confirmButtonColor: '#9333ea'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Gagal Mengakses Kamera',
+                        html: `
+                    <p class="mb-4">Terjadi kesalahan saat mengakses kamera.</p>
+                    <div class="text-left text-sm">
+                        <p class="mb-2">Silakan coba:</p>
+                        <ol class="list-decimal pl-4">
+                            <li>Pastikan anda menggunakan Chrome/Safari terbaru</li>
+                            <li>Pastikan website dibuka via HTTPS</li>
+                            <li>Coba refresh halaman</li>
+                            <li>Restart browser anda</li>
+                        </ol>
+                    </div>
+                `,
+                        icon: 'error',
+                        confirmButtonColor: '#9333ea'
+                    });
+                }
             }
         }
-
+        async function checkCameraPermission() {
+            try {
+                const result = await navigator.permissions.query({
+                    name: 'camera'
+                });
+                if (result.state === 'denied') {
+                    Swal.fire({
+                        title: 'Akses Kamera Ditolak',
+                        html: `
+                    <p class="mb-4">Mohon izinkan akses kamera untuk menggunakan fitur scan.</p>
+                    <div class="text-left text-sm">
+                        <p class="mb-2">Cara mengizinkan akses kamera:</p>
+                        <ol class="list-decimal pl-4">
+                            <li>Klik icon 🔒/🔐 di address bar browser</li>
+                            <li>Cari pengaturan "Kamera"</li>
+                            <li>Pilih "Izinkan"</li>
+                            <li>Refresh halaman ini</li>
+                        </ol>
+                    </div>
+                `,
+                        icon: 'warning',
+                        confirmButtonText: 'Mengerti',
+                        confirmButtonColor: '#9333ea'
+                    });
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.warn('Permissions API not supported');
+                return true; // Proceed anyway if API not supported
+            }
+        }
         async function switchCamera() {
             currentCamera = currentCamera === 'environment' ? 'user' : 'environment';
             await startCamera();
@@ -895,11 +1010,11 @@
                                 </div>
                             </div>
                             ${data.check_in_time ? `
-                                                                <div>
-                                                                    <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                    <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
-                                                                </div>
-                                                            ` : ''}
+                                                                            <div>
+                                                                                <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
+                                                                            </div>
+                                                                        ` : ''}
                         </div>
 
                         <!-- Informasi Medis -->
@@ -1089,11 +1204,11 @@
                         </div>
                     </div>
                     ${participant.check_in_time ? `
-                                                            <div>
-                                                                <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
-                                                            </div>
-                                                        ` : ''}
+                                                                        <div>
+                                                                            <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                            <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
+                                                                        </div>
+                                                                    ` : ''}
                 </div>
 
                 <!-- Informasi Medis -->
@@ -1216,9 +1331,12 @@
         }
 
         // Initialize when page loads
-        window.addEventListener('load', function() {
+        window.addEventListener('load', async function() {
             initializeElements();
-            startCamera();
+            const hasPermission = await checkCameraPermission();
+            if (hasPermission) {
+                startCamera();
+            }
         });
 
         // Cleanup when leaving page
