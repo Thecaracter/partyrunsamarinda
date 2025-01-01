@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->integer('usia');
             $table->enum('kategori', ['Pelajar', 'Umum', 'Master']);
             $table->foreignId('size_id')->constrained('sizes');
-            $table->enum('golongan_darah', ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']);
+            $table->enum('golongan_darah', ['A', 'B', 'AB', 'O']);
             $table->boolean('ada_alergi')->default(false);
             $table->text('riwayat_penyakit')->nullable();
             $table->string('emergency_nama');

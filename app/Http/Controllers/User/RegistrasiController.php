@@ -102,7 +102,7 @@ class RegistrasiController extends Controller
                 'usia' => 'required|numeric|min:1|max:150',
                 'kategori' => 'required|in:Pelajar,Umum,Master',
                 'size_id' => 'required|exists:sizes,id',
-                'golongan_darah' => 'required|in:A+,A-,B+,B-,O+,O-,AB+,AB-',
+                'golongan_darah' => 'required|in:A,B,AB,O'
             ], [
                 'nama_lengkap.required' => 'Nama lengkap wajib diisi',
                 'nama_lengkap.max' => 'Nama lengkap maksimal 255 karakter',
