@@ -34,7 +34,7 @@
                     <!-- Logo Area -->
                     <div class="flex items-center space-x-4">
                         <a href="/" class="flex items-center space-x-2">
-                            <img src="{{ asset('images/1.png') }}" alt="Logo" class="h-8 md:h-10" />
+                            <img src="{{ asset('Images/1.png') }}" alt="Logo" class="h-8 md:h-10" />
                         </a>
                         <!-- Social Links -->
                         <ul class="hidden md:flex items-center space-x-4">

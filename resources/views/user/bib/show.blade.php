@@ -19,10 +19,10 @@
                         <div class="absolute top-0 left-0 w-full h-full flex flex-col">
                             <div class="bg-white h-16 px-4 flex justify-between items-center border-b-2 border-yellow-400">
                                 <div class="flex gap-4">
-                                    <img src="{{ asset('images/logo_dyza.png') }}" class="h-12">
-                                    <img src="{{ asset('images/logo_dyza.png') }}" class="h-12">
+                                    <img src="{{ asset('Images/logo_dyza.png') }}" class="h-12">
+                                    <img src="{{ asset('Images/logo_dyza.png') }}" class="h-12">
                                 </div>
-                                <img src="{{ asset('images/1.png') }}" class="h-12">
+                                <img src="{{ asset('Images/1.png') }}" class="h-12">
                             </div>
 
                             <div class="flex-1 flex items-center justify-center">
