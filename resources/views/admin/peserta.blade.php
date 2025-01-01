@@ -266,16 +266,28 @@
             .camera-controls,
             .preview-controls {
                 flex-direction: row;
-                bottom: 20px;
+                bottom: 0;
                 gap: 1rem;
                 padding: 1rem;
                 background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+                justify-content: center;
+                align-items: center;
             }
 
             .control-button {
                 width: auto;
                 padding: 0.75rem 1.5rem;
                 max-width: none;
+                display: inline-flex;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 639px) {
+
+            .camera-controls button:last-child,
+            .preview-controls button:last-child {
+                display: none;
             }
         }
 
@@ -1008,11 +1020,11 @@
                                 </div>
                             </div>
                             ${data.check_in_time ? `
-                                                                                <div>
-                                                                                    <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                                    <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
-                                                                                </div>
-                                                                            ` : ''}
+                                                                                    <div>
+                                                                                        <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                        <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
+                                                                                    </div>
+                                                                                ` : ''}
                         </div>
 
                         <!-- Informasi Medis -->
@@ -1202,11 +1214,11 @@
                         </div>
                     </div>
                     ${participant.check_in_time ? `
-                                                                            <div>
-                                                                                <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                                <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
-                                                                            </div>
-                                                                        ` : ''}
+                                                                                <div>
+                                                                                    <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                    <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
+                                                                                </div>
+                                                                            ` : ''}
                 </div>
 
                 <!-- Informasi Medis -->
