@@ -365,8 +365,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Scanner Section -->
             <!-- Scanner Section -->
             <div class="bg-white rounded-lg sm:rounded-xl shadow-sm overflow-hidden mb-4 sm:mb-8">
                 <div class="p-4 sm:p-6">
@@ -1010,11 +1008,11 @@
                                 </div>
                             </div>
                             ${data.check_in_time ? `
-                                                                            <div>
-                                                                                <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                                <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
-                                                                            </div>
-                                                                        ` : ''}
+                                                                                <div>
+                                                                                    <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                    <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
+                                                                                </div>
+                                                                            ` : ''}
                         </div>
 
                         <!-- Informasi Medis -->
@@ -1204,11 +1202,11 @@
                         </div>
                     </div>
                     ${participant.check_in_time ? `
-                                                                        <div>
-                                                                            <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                            <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
-                                                                        </div>
-                                                                    ` : ''}
+                                                                            <div>
+                                                                                <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
+                                                                            </div>
+                                                                        ` : ''}
                 </div>
 
                 <!-- Informasi Medis -->

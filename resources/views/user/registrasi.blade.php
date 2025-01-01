@@ -207,14 +207,10 @@
                                 <select name="golongan_darah"
                                     class="w-full h-14 px-4 rounded-xl border-2 border-gray-300 focus:border-pink-500 focus:ring focus:ring-pink-200 transition duration-200 bg-white">
                                     <option value="" disabled selected>Pilih golongan darah</option>
-                                    <option value="A+">A+</option>
-                                    <option value="A-">A-</option>
-                                    <option value="B+">B+</option>
-                                    <option value="B-">B-</option>
-                                    <option value="AB+">AB+</option>
-                                    <option value="AB-">AB-</option>
-                                    <option value="O+">O+</option>
-                                    <option value="O-">O-</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="O">O</option>
                                 </select>
                             </div>
                         </div>
