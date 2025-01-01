@@ -398,7 +398,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Camera Controls - Di dalam camera container untuk desktop -->
+                                <!-- Camera Controls - Desktop only -->
                                 <div
                                     class="hidden sm:flex absolute bottom-0 inset-x-0 items-center justify-center p-6 bg-gradient-to-t from-black/70 to-transparent">
                                     <div class="flex gap-4">
@@ -414,24 +414,20 @@
                                 </div>
                             </div>
 
-                            <!-- Camera Controls - Diluar camera container untuk mobile -->
-                            <div class="flex flex-col sm:hidden gap-2 px-2">
+                            <!-- Camera Controls - Mobile only -->
+                            <div class="flex sm:hidden gap-2 px-2">
                                 <button onclick="switchCamera()"
                                     class="w-full py-2.5 px-4 bg-white text-gray-900 rounded-lg border border-gray-300 shadow-sm hover:bg-gray-50 transition-colors text-sm font-medium">
                                     <i class="fas fa-camera-rotate mr-2"></i> Ganti Kamera
                                 </button>
-                                <button onclick="capturePhoto()"
-                                    class="w-full py-2.5 px-4 bg-purple-600 text-white rounded-lg shadow-sm hover:bg-purple-700 transition-colors text-sm font-medium">
-                                    <i class="fas fa-camera mr-2"></i> Ambil Foto
-                                </button>
                             </div>
 
-                            <!-- Preview Captured Image -->
+                            <!-- Preview Section -->
                             <div class="preview-container relative" id="previewView">
                                 <img id="capturedImage" src="" alt="Captured QR"
                                     class="w-full h-full object-contain">
 
-                                <!-- Preview Controls untuk Desktop -->
+                                <!-- Preview Controls - Desktop -->
                                 <div
                                     class="hidden sm:flex absolute bottom-0 inset-x-0 items-center justify-center p-6 bg-gradient-to-t from-black/70 to-transparent">
                                     <div class="flex gap-4">
@@ -446,7 +442,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Preview Controls untuk Mobile -->
+                                <!-- Preview Controls - Mobile -->
                                 <div class="sm:hidden mt-4 flex flex-col gap-2 px-2">
                                     <button onclick="retakePhoto()"
                                         class="w-full py-2.5 px-4 bg-white text-gray-900 rounded-lg border border-gray-300 shadow-sm hover:bg-gray-50 transition-colors text-sm font-medium">
@@ -462,7 +458,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Participant Tables Section -->
             <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div class="px-4 sm:px-6 lg:px-8 py-6">
@@ -1020,11 +1015,11 @@
                                 </div>
                             </div>
                             ${data.check_in_time ? `
-                                                                                    <div>
-                                                                                        <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                                        <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
-                                                                                    </div>
-                                                                                ` : ''}
+                                                                                        <div>
+                                                                                            <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                            <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
+                                                                                        </div>
+                                                                                    ` : ''}
                         </div>
 
                         <!-- Informasi Medis -->
@@ -1214,11 +1209,11 @@
                         </div>
                     </div>
                     ${participant.check_in_time ? `
-                                                                                <div>
-                                                                                    <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                                    <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
-                                                                                </div>
-                                                                            ` : ''}
+                                                                                    <div>
+                                                                                        <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                        <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
+                                                                                    </div>
+                                                                                ` : ''}
                 </div>
 
                 <!-- Informasi Medis -->
