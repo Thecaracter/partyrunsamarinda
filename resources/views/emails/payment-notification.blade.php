@@ -10,88 +10,34 @@
 <body style="background: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px;">
     <div style="max-width: 800px; margin: 0 auto;">
         <div style="background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-            <!-- Header dengan gradient yang lebih soft -->
             <div
-                style="background: linear-gradient(135deg, #f9a8d4, #ec4899); 
-                        color: white; 
-                        padding: 40px 20px; 
-                        text-align: center;
-                        position: relative;
-                        overflow: hidden;">
-                <!-- Bubble decorations -->
+                style="background: linear-gradient(135deg, #f9a8d4, #ec4899); color: white; padding: 20px 20px; text-align: center; position: relative; overflow: hidden;">
                 <div
-                    style="position: absolute; 
-                           width: 100px; 
-                           height: 100px; 
-                           background: rgba(255,255,255,0.1); 
-                           border-radius: 50%; 
-                           top: -20px; 
-                           left: -20px;">
+                    style="position: absolute; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; top: -20px; left: -20px;">
                 </div>
-                <div
-                    style="position: absolute; 
-                           width: 80px; 
-                           height: 80px; 
-                           background: rgba(255,255,255,0.1); 
-                           border-radius: 50%; 
-                           bottom: -10px; 
-                           right: 30px;">
+                <div style="margin-bottom: 10px;">
+                    <img src="https://res.cloudinary.com/djapytwxw/image/upload/v1735677699/8_qgho4b.png"
+                        alt="Party Color Run Logo" style="height: 80px; width: auto;">
                 </div>
-                <h1 style="margin: 0; font-size: 32px; font-weight: bold; position: relative;">
-                    Party Color Run
-                </h1>
-                <p style="font-size: 18px; margin-top: 10px; position: relative;">
-                    Registrasi Anda telah dikonfirmasi
-                </p>
+                <h1 style="margin: 0; font-size: 32px; font-weight: bold; position: relative;">Party Color Run</h1>
+                <p style="font-size: 18px; margin-top: 10px; position: relative;">Registrasi Anda telah dikonfirmasi</p>
             </div>
-
-            <!-- Content -->
             <div style="padding: 30px; background: linear-gradient(135deg, #ffffff, #fdf2f8);">
-                <!-- BIB Number Box -->
                 <div
-                    style="background: linear-gradient(135deg, #f9a8d4, #ec4899); 
-                            color: white; 
-                            padding: 25px; 
-                            border-radius: 1rem; 
-                            text-align: center; 
-                            margin-bottom: 30px;
-                            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);">
+                    style="background: linear-gradient(135deg, #f9a8d4, #ec4899); color: white; padding: 25px; border-radius: 1rem; text-align: center; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);">
                     <div style="font-size: 20px;">Nomor BIB</div>
                     <div style="font-size: 36px; font-weight: bold; margin-top: 10px;">
-                        {{ $peserta->kode_bib ?? 'Akan diberikan setelah pembayaran' }}
-                    </div>
+                        {{ $peserta->kode_bib ?? 'Akan diberikan setelah pembayaran' }}</div>
                 </div>
-
-                <!-- Status Pembayaran -->
                 <div style="text-align: center; margin-bottom: 30px;">
                     <span
-                        style="background: {{ $peserta->status_pembayaran === 'paid' ? 'linear-gradient(135deg, #86efac, #22c55e)' : 'linear-gradient(135deg, #f9a8d4, #ec4899)' }}; 
-                               color: white; 
-                               padding: 10px 30px; 
-                               border-radius: 9999px; 
-                               font-weight: 600;
-                               font-size: 16px;
-                               box-shadow: 0 2px 10px {{ $peserta->status_pembayaran === 'paid' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(236, 72, 153, 0.2)' }};">
-                        {{ $peserta->status_pembayaran === 'paid' ? 'Pembayaran Lunas' : 'Menunggu Pembayaran' }}
-                    </span>
+                        style="background: {{ $peserta->status_pembayaran === 'paid' ? 'linear-gradient(135deg, #86efac, #22c55e)' : 'linear-gradient(135deg, #f9a8d4, #ec4899)' }}; color: white; padding: 10px 30px; border-radius: 9999px; font-weight: 600; font-size: 16px; box-shadow: 0 2px 10px {{ $peserta->status_pembayaran === 'paid' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(236, 72, 153, 0.2)' }};">{{ $peserta->status_pembayaran === 'paid' ? 'Pembayaran Lunas' : 'Menunggu Pembayaran' }}</span>
                 </div>
-
-                <!-- Data Diri -->
                 <div
-                    style="background: white; 
-                            border-radius: 1rem; 
-                            padding: 25px; 
-                            margin-bottom: 25px;
-                            box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                    style="background: white; border-radius: 1rem; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
                     <h3
-                        style="color: #ec4899; 
-                              font-size: 20px; 
-                              font-weight: bold; 
-                              border-bottom: 2px solid #f9a8d4; 
-                              padding-bottom: 12px; 
-                              margin-top: 0;">
-                        Data Diri
-                    </h3>
+                        style="color: #ec4899; font-size: 20px; font-weight: bold; border-bottom: 2px solid #f9a8d4; padding-bottom: 12px; margin-top: 0;">
+                        Data Diri</h3>
                     <table style="width: 100%; border-collapse: collapse;">
                         <tr>
                             <td style="padding: 12px 0; color: #6b7280; width: 140px;">Nama Lengkap</td>
@@ -117,23 +63,11 @@
                         </tr>
                     </table>
                 </div>
-
-                <!-- Alamat & Kontak Darurat -->
                 <div
-                    style="background: white; 
-                            border-radius: 1rem; 
-                            padding: 25px; 
-                            margin-bottom: 25px;
-                            box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                    style="background: white; border-radius: 1rem; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
                     <h3
-                        style="color: #ec4899; 
-                              font-size: 20px; 
-                              font-weight: bold; 
-                              border-bottom: 2px solid #f9a8d4; 
-                              padding-bottom: 12px; 
-                              margin-top: 0;">
-                        Alamat & Kontak Darurat
-                    </h3>
+                        style="color: #ec4899; font-size: 20px; font-weight: bold; border-bottom: 2px solid #f9a8d4; padding-bottom: 12px; margin-top: 0;">
+                        Alamat & Kontak Darurat</h3>
                     <table style="width: 100%; border-collapse: collapse;">
                         <tr>
                             <td style="padding: 12px 0; color: #6b7280; width: 140px;">Alamat Lengkap</td>
@@ -157,45 +91,21 @@
                         </tr>
                     </table>
                 </div>
-
-                <!-- Important Note -->
                 <div
-                    style="background: linear-gradient(135deg, #fee2e2, #fecdd3); 
-                            padding: 20px; 
-                            margin-top: 30px; 
-                            border-radius: 1rem;
-                            border-left: 4px solid #ec4899;
-                            box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                    style="background: linear-gradient(135deg, #fee2e2, #fecdd3); padding: 20px; margin-top: 30px; border-radius: 1rem; border-left: 4px solid #ec4899; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
                     <strong style="color: #be123c;">Penting:</strong>
-                    <p style="margin: 10px 0 0 0; color: #881337;">
-                        Simpan email ini sebagai bukti registrasi Anda. Email ini akan diperlukan saat pengambilan race
-                        pack.
-                    </p>
+                    <p style="margin: 10px 0 0 0; color: #881337;">Simpan email ini sebagai bukti registrasi Anda. Email
+                        ini akan diperlukan saat pengambilan race pack.</p>
                 </div>
             </div>
-
-            <!-- Footer -->
             <div
-                style="background: linear-gradient(135deg, #f9a8d4, #ec4899);
-                        color: white; 
-                        text-align: center; 
-                        padding: 30px;
-                        position: relative;
-                        overflow: hidden;">
-                <!-- Bubble decorations -->
+                style="background: linear-gradient(135deg, #f9a8d4, #ec4899); color: white; text-align: center; padding: 30px; position: relative; overflow: hidden;">
                 <div
-                    style="position: absolute; 
-                           width: 60px; 
-                           height: 60px; 
-                           background: rgba(255,255,255,0.1); 
-                           border-radius: 50%; 
-                           top: 10px; 
-                           right: -10px;">
+                    style="position: absolute; width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%; top: 10px; right: -10px;">
                 </div>
                 <p style="margin: 5px 0; font-size: 16px; position: relative;">
-                    <a href="mailto:support@partycolorrun.com" style="color: white; text-decoration: none;">
-                        partycolorbderma@gmail.com
-                    </a>
+                    <a href="mailto:support@partycolorrun.com"
+                        style="color: white; text-decoration: none;">partycolorbderma@gmail.com</a>
                     <br>
                     <span>+62 812-3456-7890</span>
                 </p>

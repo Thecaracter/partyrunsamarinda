@@ -372,6 +372,24 @@
                                     class="w-full h-14 px-4 rounded-xl border-2 border-gray-300 focus:border-pink-500 focus:ring focus:ring-pink-200 transition duration-200"
                                     placeholder="Contoh: 08123456789">
                             </div>
+
+                            <div class="md:col-span-2 mt-8">
+                                <div class="bg-pink-50 p-6 rounded-xl border border-pink-200">
+                                    <h4 class="font-semibold text-lg text-gray-900 mb-4">Syarat dan Ketentuan</h4>
+                                    <label class="flex items-start">
+                                        <input type="checkbox" name="agreement" id="agreement"
+                                            class="mt-1 h-5 w-5 text-pink-600 rounded focus:ring-pink-500">
+                                        <span class="ml-3 text-gray-700">
+                                            Saya telah membaca dan menyetujui
+                                            <a href="#" target="_blank"
+                                                class="text-pink-600 font-semibold hover:text-pink-700 underline">
+                                                syarat dan ketentuan
+                                            </a>
+                                            yang berlaku
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="flex justify-between mt-12">
@@ -677,6 +695,14 @@
         function submitStep3() {
             if (!validateForm('step3Form')) {
                 showAlert('Harap lengkapi semua field yang diperlukan.');
+                return;
+            }
+
+            // Validasi checkbox persetujuan
+            const agreementCheckbox = document.getElementById('agreement');
+            if (!agreementCheckbox.checked) {
+                showAlert('Anda harus menyetujui syarat dan ketentuan untuk melanjutkan.');
+                agreementCheckbox.parentElement.classList.add('text-red-500');
                 return;
             }
 

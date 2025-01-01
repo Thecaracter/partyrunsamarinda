@@ -40,8 +40,10 @@
                 <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">Presented By</h2>
             </div>
             <div class="flex justify-center items-center">
-                <img src="{{ asset('Images/platinum-hotel-indonesia.png') }}" alt=""
-                    class="px-4 sm:px-6 max-h-8 sm:max-h-12 lg:max-h-16 w-auto" style="filter: brightness(0) invert(1);">
+                <img src="{{ asset('Images/logo_dyza.png') }}" alt=""
+                    class="px-4 sm:px-6 max-h-8 sm:max-h-12 lg:max-h-16 w-auto" style="">
+                <img src="{{ asset('Images/logo_dyza.png') }}" alt=""
+                    class="px-4 sm:px-6 max-h-8 sm:max-h-12 lg:max-h-16 w-auto" style="">
             </div>
         </div>
     </section>
@@ -84,9 +86,11 @@
     </section>
 
     <!-- Countdown Section -->
+    <!-- Countdown Section -->
     <section class="py-10 sm:py-14 lg:py-24 bg-blue-500 text-[#FFD942]">
         <div class="container px-4 sm:px-8 lg:px-28 mx-auto">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left Column sama seperti sebelumnya -->
                 <div class="lg:col-span-5">
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight mb-6">Count down to race Day</h2>
                     <p class="text-base sm:text-lg">
@@ -106,7 +110,8 @@
                     </p>
                 </div>
 
-                <div class="lg:col-span-6 lg:col-start-7">
+                <!-- Right Column with Countdown -->
+                <div class="lg:col-span-6 lg:col-start-7" x-data="countdown">
                     <div class="mb-4">
                         <h5 class="text-xl sm:text-2xl font-bold text-center mb-6">
                             Countdown to Race Day!
@@ -116,7 +121,8 @@
                                 <!-- Days -->
                                 <div class="text-center">
                                     <div class="py-2">
-                                        <h3 class="countdown-element days text-2xl sm:text-4xl font-bold">00</h3>
+                                        <h3 class="text-2xl sm:text-4xl font-bold"
+                                            x-text="days.toString().padStart(2, '0')">00</h3>
                                     </div>
                                     <p class="text-sm sm:text-base font-semibold">Days</p>
                                 </div>
@@ -124,7 +130,8 @@
                                 <!-- Hours -->
                                 <div class="text-center">
                                     <div class="py-2">
-                                        <h3 class="countdown-element hours text-2xl sm:text-4xl font-bold">00</h3>
+                                        <h3 class="text-2xl sm:text-4xl font-bold"
+                                            x-text="hours.toString().padStart(2, '0')">00</h3>
                                     </div>
                                     <p class="text-sm sm:text-base font-semibold">Hours</p>
                                 </div>
@@ -132,7 +139,8 @@
                                 <!-- Minutes -->
                                 <div class="text-center">
                                     <div class="py-2">
-                                        <h3 class="countdown-element minutes text-2xl sm:text-4xl font-bold">00</h3>
+                                        <h3 class="text-2xl sm:text-4xl font-bold"
+                                            x-text="minutes.toString().padStart(2, '0')">00</h3>
                                     </div>
                                     <p class="text-sm sm:text-base font-semibold">Minutes</p>
                                 </div>
@@ -140,9 +148,8 @@
                                 <!-- Seconds -->
                                 <div class="text-center">
                                     <div class="py-2">
-                                        <h3
-                                            class="countdown-element seconds text-2xl sm:text-4xl font-bold animate-countinsecond">
-                                            00</h3>
+                                        <h3 class="text-2xl sm:text-4xl font-bold"
+                                            x-text="seconds.toString().padStart(2, '0')">00</h3>
                                     </div>
                                     <p class="text-sm sm:text-base font-semibold">Seconds</p>
                                 </div>
@@ -153,4 +160,41 @@
             </div>
         </div>
     </section>
+    @push('scripts')
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('countdown', () => ({
+                    days: 0,
+                    hours: 0,
+                    minutes: 0,
+                    seconds: 0,
+                    targetDate: new Date('2025-02-02T00:00:00').getTime(),
+
+                    init() {
+                        this.updateCountdown();
+                        setInterval(() => {
+                            this.updateCountdown();
+                        }, 1000);
+                    },
+
+                    updateCountdown() {
+                        const now = new Date().getTime();
+                        const distance = this.targetDate - now;
+
+                        if (distance > 0) {
+                            this.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                            this.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            this.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        } else {
+                            this.days = 0;
+                            this.hours = 0;
+                            this.minutes = 0;
+                            this.seconds = 0;
+                        }
+                    }
+                }));
+            });
+        </script>
+    @endpush
 @endsection

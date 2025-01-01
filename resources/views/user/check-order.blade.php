@@ -6,9 +6,43 @@
             <!-- Card Container -->
             <div class="bg-white rounded-2xl shadow-xl p-6 md:p-10">
                 <!-- Header -->
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Check Order</h2>
-                    <p class="text-gray-600 text-lg">Masukkan kode BIB untuk melihat detail pendaftaran Anda</p>
+                <div class="text-center max-w-2xl mx-auto px-4 py-12">
+                    <!-- Title with subtle animation on hover -->
+                    <h2
+                        class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-8 hover:scale-105 transform transition-all duration-300">
+                        Check Order Status
+                    </h2>
+
+                    <!-- Reordered and styled instructions -->
+                    <div class="space-y-6">
+                        <!-- Step 1: Check Email -->
+                        <div class="bg-white/50 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-purple-100">
+                            <p class="text-gray-700 text-lg md:text-xl font-medium flex items-center justify-center gap-3">
+                                <span
+                                    class="flex items-center justify-center w-8 h-8 bg-purple-600 text-white rounded-full font-bold">1</span>
+                                <svg class="w-6 h-6 text-purple-600 flex-shrink-0" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                <span>Silahkan Check Email Anda Untuk Mendapatkan Kode BIB</span>
+                            </p>
+                        </div>
+
+                        <!-- Step 2: Enter BIB Code -->
+                        <div class="bg-white/50 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-purple-100">
+                            <p class="text-gray-700 text-lg md:text-xl font-medium flex items-center justify-center gap-3">
+                                <span
+                                    class="flex items-center justify-center w-8 h-8 bg-purple-600 text-white rounded-full font-bold">2</span>
+                                <svg class="w-6 h-6 text-purple-600 flex-shrink-0" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <span>Masukkan kode BIB untuk melihat detail pendaftaran Anda</span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Payment Status Alert -->

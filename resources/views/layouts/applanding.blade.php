@@ -34,7 +34,7 @@
                     <!-- Logo Area -->
                     <div class="flex items-center space-x-4">
                         <a href="/" class="flex items-center space-x-2">
-                            <img src="{{ asset('images/8.png') }}" alt="Logo" class="h-8 md:h-10 brightness-0" />
+                            <img src="{{ asset('images/1.png') }}" alt="Logo" class="h-8 md:h-10" />
                         </a>
                         <!-- Social Links -->
                         <ul class="hidden md:flex items-center space-x-4">
@@ -50,9 +50,10 @@
                     <!-- Desktop Menu -->
                     <ul class="hidden lg:flex items-center space-x-6">
                         <li><a class="hover:text-blue-600 transition-colors" href="/">Home</a></li>
-                        <li><a class="hover:text-blue-600 transition-colors" href="/event">Event</a></li>
-                        <li><a class="hover:text-blue-600 transition-colors" href="/about">About us</a></li>
-                        <li><a class="hover:text-blue-600 transition-colors" href="/rules">Rules</a></li>
+                        <li><a class="hover:text-blue-600 transition-colors" href="{{ route('event') }}">Event</a></li>
+                        <li><a class="hover:text-blue-600 transition-colors" href="{{ route('about') }}">About us</a>
+                        </li>
+                        <li><a class="hover:text-blue-600 transition-colors" href="{{ route('rules') }}">Rules</a></li>
                         <li>
                             <a class="border border-black hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors py-2 px-4 rounded-md"
                                 href="/check-order">Check Order</a>
@@ -66,8 +67,8 @@
                     <!-- Mobile Menu Button -->
                     <button class="lg:hidden p-2 rounded-md hover:bg-gray-100 transition-colors"
                         @click="mobileMenuOpen = !mobileMenuOpen" aria-label="Toggle menu">
-                        <i class="text-xl transition-transform duration-300 ease-in-out"
-                            :class="{ 'fa-xmark': mobileMenuOpen, 'fa-bars': !mobileMenuOpen }" class="fa-solid"></i>
+                        <i class="fas" :class="{ 'fa-xmark': mobileMenuOpen, 'fa-bars': !mobileMenuOpen }">
+                        </i>
                     </button>
                 </div>
 

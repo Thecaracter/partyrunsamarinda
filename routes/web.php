@@ -3,15 +3,25 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\BibController;
 use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\User\PaymentController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\User\PaymentController;
+use App\Http\Controllers\Admin\PesertaController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\CheckOrderController;
 use App\Http\Controllers\User\RegistrasiController;
 
 // Landing Page
 Route::view('/', 'user.landing')->name('home');
-
+Route::get('/about', function () {
+    return view('user.about-us');
+})->name('about');
+Route::get('/event', function () {
+    return view('user.event');
+})->name('event');
+Route::get('/rules', function () {
+    return view('user.rules');
+})->name('rules');
 // Registrasi Routes
 Route::prefix('registrasi')->group(function () {
     Route::get('/', [RegistrasiController::class, 'index'])->name('registrasi.index');
@@ -44,19 +54,38 @@ Route::get('/bib/{peserta}', [BibController::class, 'show'])->name('bib.show');
 
 // Admin Routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    // Auth Routes
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // Public Auth Routes (Login)
+    Route::middleware(['guest'])->group(function () {
+        Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+        Route::post('/login', [AuthController::class, 'login']);
+    });
 
-    // Protected Admin Routes
+    // Protected Admin Routes - All routes require authentication
     Route::middleware(['auth'])->group(function () {
+        // Logout Route
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+        // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // Size Management Routes
-        Route::get('/sizes', [SizeController::class, 'index'])->name('sizes.index');
-        Route::post('/sizes', [SizeController::class, 'store'])->name('sizes.store');
-        Route::put('/sizes/{size}', [SizeController::class, 'update'])->name('sizes.update');
-        Route::delete('/sizes/{size}', [SizeController::class, 'destroy'])->name('sizes.destroy');
+        Route::prefix('sizes')->as('sizes.')->group(function () {
+            Route::get('/', [SizeController::class, 'index'])->name('index');
+            Route::post('/', [SizeController::class, 'store'])->name('store');
+            Route::put('/{size}', [SizeController::class, 'update'])->name('update');
+            Route::delete('/{size}', [SizeController::class, 'destroy'])->name('destroy');
+        });
+
+        // Peserta Management Routes
+        Route::prefix('peserta')->as('peserta.')->group(function () {
+            Route::get('/', [PesertaController::class, 'index'])->name('index');
+            Route::get('/scan', [PesertaController::class, 'index'])->name('scan-page');
+            Route::get('/data', [PesertaController::class, 'getPesertaData'])->name('data');
+            Route::get('/{bibNumber}', [PesertaController::class, 'getPeserta'])->name('get');
+            Route::post('/scan', [PesertaController::class, 'scanBib'])->name('scan');
+        });
+
+        // Export Route
+        Route::get('/export-excel', [AdminController::class, 'exportExcel'])->name('export.excel');
     });
 });

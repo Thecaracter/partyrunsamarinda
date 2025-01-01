@@ -10,6 +10,7 @@
 </head>
 
 <body class="h-full">
+    @stack('styles')
     <div x-data="{ sidebarOpen: false }" class="h-full">
         <!-- Sidebar for mobile -->
         <div x-show="sidebarOpen" class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
