@@ -156,7 +156,7 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Desktop QR code
+                // Generate QR code untuk desktop
                 new QRCode(document.getElementById("qrcode"), {
                     text: "{{ route('check-order.index', ['kode_bib' => $peserta->kode_bib]) }}",
                     width: 64,
@@ -166,12 +166,12 @@
                     correctLevel: QRCode.CorrectLevel.H
                 });
 
-                // Mobile QR code
+                // Generate QR code untuk mobile view (bukan untuk download)
                 if (document.getElementById("qrcode-mobile")) {
                     new QRCode(document.getElementById("qrcode-mobile"), {
                         text: "{{ route('check-order.index', ['kode_bib' => $peserta->kode_bib]) }}",
-                        width: 24,
-                        height: 24,
+                        width: 16,
+                        height: 16,
                         colorDark: "#000000",
                         colorLight: "#ffffff",
                         correctLevel: QRCode.CorrectLevel.H
@@ -180,20 +180,55 @@
             });
 
             async function downloadBib() {
-                const isMobile = window.innerWidth < 640;
-                const element = document.getElementById(isMobile ? 'bib-card-mobile' : 'bib-card');
-                const scale = isMobile ? 3 : 2;
-
                 try {
-                    const blob = await domtoimage.toBlob(element, {
-                        scale: scale,
+                    // Selalu gunakan versi desktop untuk download
+                    const desktopCard = document.getElementById('bib-card');
+                    let elementToCapture;
+
+                    // Jika di mobile, clone desktop version dan set display block
+                    if (window.innerWidth < 640) {
+                        const clone = desktopCard.cloneNode(true);
+                        clone.classList.remove('hidden');
+                        clone.classList.add('block');
+                        clone.id = 'bib-card-temp';
+                        clone.style.position = 'fixed';
+                        clone.style.top = '-9999px';
+                        clone.style.left = '-9999px';
+                        document.body.appendChild(clone);
+
+                        // Generate QR code untuk clone
+                        new QRCode(clone.querySelector('#qrcode'), {
+                            text: "{{ route('check-order.index', ['kode_bib' => $peserta->kode_bib]) }}",
+                            width: 64,
+                            height: 64,
+                            colorDark: "#000000",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+
+                        // Tunggu sebentar agar QR code ter-generate
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        elementToCapture = clone;
+                    } else {
+                        elementToCapture = desktopCard;
+                    }
+
+                    const blob = await domtoimage.toBlob(elementToCapture, {
+                        scale: 2,
                         quality: 1,
+                        bgcolor: '#ffffff',
                         style: {
                             transform: 'scale(1)',
                             transformOrigin: 'top left'
                         }
                     });
 
+                    // Cleanup jika ada clone
+                    if (window.innerWidth < 640) {
+                        document.getElementById('bib-card-temp').remove();
+                    }
+
+                    // Download file
                     const url = URL.createObjectURL(blob);
                     const link = document.createElement('a');
                     link.download = 'BIB-{{ str_pad($peserta->kode_bib, 3, '0', STR_PAD_LEFT) }}.png';
