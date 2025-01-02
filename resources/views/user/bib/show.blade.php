@@ -29,7 +29,7 @@
                             <!-- Gradient background with number -->
                             <div
                                 class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 h-[calc(100%-4.5rem)] flex flex-col items-center justify-center mb-[20px]">
-                                <div class="text-[60px] font-black text-black leading-none">
+                                <div class="text-[40px] font-black text-black leading-none">
                                     {{ str_pad($peserta->kode_bib, 3, '0', STR_PAD_LEFT) }}
                                 </div>
                                 <div class="text-base font-bold text-black lowercase mt-[-8px]">
