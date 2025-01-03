@@ -74,15 +74,15 @@ class Peserta extends Model
 
         if ($lastBib) {
             // Jika sudah ada peserta sebelumnya, increment nomor terakhir
-            $lastNumber = intval(substr($lastBib->kode_bib, 0));
+            $lastNumber = intval($lastBib->kode_bib);
             $nextNumber = $lastNumber + 1;
         } else {
-            // Jika belum ada peserta, mulai dari 1
-            $nextNumber = 1;
+            // Jika belum ada peserta, mulai dari 2001
+            $nextNumber = 2001;
         }
 
-        // Format nomor dengan leading zeros (misalnya: 001, 002, dst)
-        $this->kode_bib = str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+        // Simpan nomor langsung tanpa padding karena sudah 4 digit
+        $this->kode_bib = $nextNumber;
     }
 
     public function size()
