@@ -67,22 +67,20 @@ class Peserta extends Model
 
     public function generateBibCode()
     {
-        // Ambil kode BIB terakhir
         $lastBib = self::where('kode_bib', '!=', null)
             ->orderBy('kode_bib', 'desc')
             ->first();
 
         if ($lastBib) {
-            // Jika sudah ada peserta sebelumnya, increment nomor terakhir
-            $lastNumber = intval($lastBib->kode_bib);
-            $nextNumber = $lastNumber + 1;
+            $nextNumber = intval($lastBib->kode_bib) + 1;
+            if ($nextNumber > 29999) {
+                throw new \Exception('BIB code limit reached');
+            }
         } else {
-            // Jika belum ada peserta, mulai dari 2001
-            $nextNumber = 2001;
+            $nextNumber = 20001;
         }
 
-        // Simpan nomor langsung tanpa padding karena sudah 4 digit
-        $this->kode_bib = $nextNumber;
+        $this->kode_bib = sprintf("%05d", $nextNumber);
     }
 
     public function size()
