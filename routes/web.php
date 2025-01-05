@@ -25,7 +25,7 @@ Route::get('/rules', function () {
 })->name('rules');
 // Registrasi Routes
 Route::prefix('registrasi')->group(function () {
-    Route::get('/', [RegistrasiController::class, 'index'])->name('registrasi.index');
+    // Route::get('/', [RegistrasiController::class, 'index'])->name('registrasi.index');
 
     // Wilayah Indonesia API
     Route::get('/provinces', [RegistrasiController::class, 'getProvinces']);
