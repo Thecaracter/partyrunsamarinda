@@ -53,8 +53,8 @@ class Peserta extends Model
     {
         parent::boot();
 
-        // Ketika pembayaran berhasil, generate kode BIB
         static::updating(function ($peserta) {
+            // Generate kode BIB jika belum ada
             if (
                 $peserta->isDirty('status_pembayaran') &&
                 $peserta->status_pembayaran === 'paid' &&
@@ -62,16 +62,25 @@ class Peserta extends Model
             ) {
                 $peserta->generateBibCode();
             }
+
+            // Kurangi stok ketika pembayaran sukses
+            if (
+                $peserta->isDirty('status_pembayaran') &&
+                $peserta->status_pembayaran === 'paid' &&
+                $peserta->getOriginal('status_pembayaran') !== 'paid'
+            ) {
+                if ($size = $peserta->size) {
+                    $size->decrementStockForPeserta();
+                }
+            }
         });
     }
 
     public function generateBibCode()
     {
-        // Kunci global untuk generate BIB, timeout 3 detik
         $lock = \Illuminate\Support\Facades\Cache::lock('generate-bib-lock', 3);
 
         try {
-            // Mencoba mendapatkan lock dengan timeout 1 detik
             $lock->block(1);
 
             \Illuminate\Support\Facades\DB::transaction(function () {

@@ -5,8 +5,9 @@ namespace App\Http\Controllers\User;
 use App\Models\Size;
 use App\Models\Peserta;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 
 class RegistrasiController extends Controller
 {
@@ -242,6 +243,7 @@ class RegistrasiController extends Controller
 
     public function saveStep3(Request $request)
     {
+        DB::beginTransaction();
         try {
             $validatedData = $request->validate([
                 'ada_alergi' => 'required|boolean',
@@ -261,6 +263,7 @@ class RegistrasiController extends Controller
             $step2Data = $request->session()->get('registration_step2');
 
             if (!$step1Data || !$step2Data) {
+                DB::rollBack();
                 return response()->json([
                     'success' => false,
                     'message' => 'Data pendaftaran tidak lengkap',
@@ -274,11 +277,25 @@ class RegistrasiController extends Controller
             // Cek size tersedia
             $size = Size::find($step1Data['size_id']);
             if (!$size) {
+                DB::rollBack();
                 return response()->json([
                     'success' => false,
                     'message' => 'Pendaftaran gagal',
                     'errors' => [
                         'size' => ['Ukuran jersey yang dipilih tidak valid.']
+                    ],
+                    'error_fields' => ['size']
+                ], 422);
+            }
+
+            // Cek stock
+            if ($size->stock <= 0) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Pendaftaran gagal',
+                    'errors' => [
+                        'size' => ['Maaf, stok jersey untuk ukuran yang dipilih sudah habis. Silakan pilih ukuran lain.']
                     ],
                     'error_fields' => ['size']
                 ], 422);
@@ -307,6 +324,8 @@ class RegistrasiController extends Controller
             // Hapus data session
             $request->session()->forget(['registration_step1', 'registration_step2']);
 
+            DB::commit();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Registrasi berhasil! Silakan lanjutkan ke pembayaran.',
@@ -314,6 +333,7 @@ class RegistrasiController extends Controller
             ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             $errors = $e->errors();
             $failedFields = array_keys($errors);
 
@@ -330,19 +350,22 @@ class RegistrasiController extends Controller
                 ])
             ], 422);
         } catch (\Exception $e) {
+            DB::rollBack();
             \Log::error('Registration Step 3 Error:', [
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'step1_data' => $request->session()->get('registration_step1'),
+                'step2_data' => $request->session()->get('registration_step2')
             ]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan sistem saat menyelesaikan pendaftaran. Detail: ' . $e->getMessage(),
-                'error_detail' => [
+                'message' => 'Terjadi kesalahan sistem saat menyelesaikan pendaftaran. Silakan coba lagi.',
+                'error_detail' => config('app.debug') ? [
                     'message' => $e->getMessage(),
                     'file' => $e->getFile(),
                     'line' => $e->getLine()
-                ]
+                ] : null
             ], 500);
         }
     }

@@ -73,104 +73,154 @@
     </div>
 @endsection
 
+
 @push('scripts')
-    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
-    {{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script> --}}
+    {{-- Loading Overlay HTML --}}
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="text-center">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+            <p class="mt-2 text-white font-semibold">Mohon tunggu...</p>
+        </div>
+    </div>
+
+    @if (config('midtrans.is_production'))
+        <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.current_client_key') }}">
+        </script>
+    @else
+        <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+            data-client-key="{{ config('midtrans.current_client_key') }}"></script>
+    @endif
+
     <script>
-        const payButton = document.querySelector('#pay-button');
-        payButton.addEventListener('click', function(e) {
-            e.preventDefault();
+        document.addEventListener('DOMContentLoaded', function() {
+            const payButton = document.querySelector('#pay-button');
+            const loadingOverlay = document.querySelector('#loadingOverlay');
+            let currentStatus = 'initial';
 
-            snap.pay('{{ $snapToken }}', {
-                onSuccess: async function(result) {
-                    try {
-                        // Kirim request untuk update status
-                        const response = await fetch('/payment/{{ $peserta->id }}/update-status', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector(
-                                    'meta[name="csrf-token"]').content
-                            },
-                            body: JSON.stringify({
-                                transaction_status: result.transaction_status,
-                                transaction_id: result.transaction_id,
-                                payment_type: result.payment_type,
-                                gross_amount: result.gross_amount
-                            })
-                        });
-
-                        if (!response.ok) {
-                            throw new Error('Gagal mengupdate status');
-                        }
-
-                        // Redirect ke check-order dengan kode BIB
-                        window.location.href =
-                            '{{ route('check-order.index') }}?kode_bib={{ $peserta->kode_bib }}';
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert('Terjadi kesalahan saat memproses pembayaran');
-                    }
-                },
-                onPending: function(result) {
-                    // Update status ke pending
-                    fetch('/payment/{{ $peserta->id }}/update-status', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .content
-                        },
-                        body: JSON.stringify({
-                            transaction_status: 'pending',
-                            transaction_id: result.transaction_id,
-                            payment_type: result.payment_type,
-                            gross_amount: result.gross_amount
-                        })
-                    }).finally(() => {
-                        window.location.href =
-                            '{{ route('check-order.index') }}?kode_bib={{ $peserta->kode_bib }}';
-                    });
-                },
-                onError: function(result) {
-                    // Update status ke failed
-                    fetch('/payment/{{ $peserta->id }}/update-status', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .content
-                        },
-                        body: JSON.stringify({
-                            transaction_status: 'failed',
-                            transaction_id: result.transaction_id,
-                            payment_type: result.payment_type,
-                            gross_amount: result.gross_amount
-                        })
-                    }).finally(() => {
-                        window.location.href =
-                            '{{ route('check-order.index') }}?kode_bib={{ $peserta->kode_bib }}';
-                    });
-                },
-                onClose: function() {
-                    // Optional: update status ke cancelled
-                    fetch('/payment/{{ $peserta->id }}/update-status', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .content
-                        },
-                        body: JSON.stringify({
-                            transaction_status: 'cancelled'
-                        })
-                    });
+            function showLoading() {
+                if (loadingOverlay) {
+                    loadingOverlay.classList.remove('hidden');
+                    loadingOverlay.classList.add('flex');
                 }
-            });
+                if (payButton) {
+                    payButton.disabled = true;
+                }
+            }
+
+            function hideLoading() {
+                if (loadingOverlay) {
+                    loadingOverlay.classList.add('hidden');
+                    loadingOverlay.classList.remove('flex');
+                }
+                if (payButton) {
+                    payButton.disabled = false;
+                }
+            }
+
+            if (payButton) {
+                payButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showLoading();
+
+                    setTimeout(() => {
+                        hideLoading();
+                        snap.pay('{{ $snapToken }}', {
+                            skipOrderSummary: true,
+                            autoCloseDelay: 3,
+                            onSuccess: async function(result) {
+                                showLoading();
+                                try {
+                                    const response = await fetch(
+                                        '/payment/{{ $peserta->id }}/update-status', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Accept': 'application/json',
+                                                'X-CSRF-TOKEN': document
+                                                    .querySelector(
+                                                        'meta[name="csrf-token"]')
+                                                    .content
+                                            },
+                                            body: JSON.stringify({
+                                                transaction_status: result
+                                                    .transaction_status,
+                                                transaction_id: result
+                                                    .transaction_id,
+                                                payment_type: result
+                                                    .payment_type,
+                                                gross_amount: result
+                                                    .gross_amount
+                                            })
+                                        });
+
+                                    if (!response.ok) {
+                                        throw new Error('Gagal mengupdate status');
+                                    }
+
+                                    currentStatus = 'success';
+                                    window.location.href =
+                                        '{{ route('check-order.index') }}?kode_bib={{ $peserta->kode_bib }}';
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    alert(
+                                        'Terjadi kesalahan saat memproses pembayaran'
+                                    );
+                                    hideLoading();
+                                }
+                            },
+                            onPending: function(result) {
+                                showLoading();
+                                currentStatus = 'pending';
+                                updateStatus('pending', result);
+                            },
+                            onError: function(result) {
+                                showLoading();
+                                currentStatus = 'failed';
+                                updateStatus('failed', result);
+                            },
+                            onClose: function() {
+                                // Jika pembayaran belum selesai, buka kembali Snap
+                                if (!['success', 'pending', 'failed'].includes(
+                                        currentStatus)) {
+                                    setTimeout(() => {
+                                        snap.pay('{{ $snapToken }}');
+                                    }, 100);
+                                }
+                            }
+                        });
+                    }, 500);
+                });
+            }
+
+            async function updateStatus(status, result = {}) {
+                showLoading();
+                try {
+                    const response = await fetch('/payment/{{ $peserta->id }}/update-status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            transaction_status: status,
+                            transaction_id: result.transaction_id,
+                            payment_type: result.payment_type,
+                            gross_amount: result.gross_amount
+                        })
+                    });
+
+                    if (status !== 'cancelled') {
+                        window.location.href =
+                            '{{ route('check-order.index') }}?kode_bib={{ $peserta->kode_bib }}';
+                    }
+                } catch (error) {
+                    console.error('Error updating status:', error);
+                    alert('Terjadi kesalahan saat mengupdate status');
+                } finally {
+                    hideLoading();
+                }
+            }
         });
     </script>
 @endpush

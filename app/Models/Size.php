@@ -19,4 +19,13 @@ class Size extends Model
     {
         return $this->hasMany(Peserta::class);
     }
+
+    public function decrementStockForPeserta()
+    {
+        if ($this->stock > 0) {
+            $this->decrement('stock');
+            return true;
+        }
+        throw new \Exception('Stok jersey untuk ukuran yang dipilih sudah habis');
+    }
 }
