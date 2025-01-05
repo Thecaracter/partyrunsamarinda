@@ -111,6 +111,8 @@
                         <p style="margin: 10px 0 0 0; color: #FFFFFF;">Simpan email ini sebagai bukti registrasi Anda.
                             Email
                             ini akan diperlukan saat pengambilan race pack.</p>
+                        <p style="margin: 10px 0 0 0; color: #FFFFFF;">Untuk No BIB Akan Diberikan Pada Saat Pengambilan
+                            Race Pack</p>
                     </div>
                 </div>
                 <div
