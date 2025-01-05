@@ -109,10 +109,17 @@
                         style="background: linear-gradient(135deg, #141B9C, #141B9C); padding: 20px; margin-top: 30px; border-radius: 1rem; border-left: 4px solid #ec4899; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
                         <strong style="color: #be123c;">Penting:</strong>
                         <p style="margin: 10px 0 0 0; color: #FFFFFF;">Simpan email ini sebagai bukti registrasi Anda.
-                            Email
-                            ini akan diperlukan saat pengambilan race pack.</p>
+                            Email ini akan diperlukan saat pengambilan race pack.</p>
                         <p style="margin: 10px 0 0 0; color: #FFFFFF;">Untuk No BIB Akan Diberikan Pada Saat Pengambilan
                             Race Pack</p>
+
+                        <!-- Tombol Check Order -->
+                        <div style="text-align: center; margin-top: 20px;">
+                            <a href="https://partycolorbderma.com/check-order?no_wa={{ $peserta->no_wa }}"
+                                style="display: inline-block; background: #ec4899; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                                Cek Status Pendaftaran
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div
