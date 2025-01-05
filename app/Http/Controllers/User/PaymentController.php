@@ -101,11 +101,6 @@ class PaymentController extends Controller
 
             // Jika pembayaran berhasil dan status sebelumnya bukan paid
             if ($status === 'paid' && $oldStatus !== 'paid') {
-                // Generate BIB jika belum ada
-                if (empty($peserta->kode_bib)) {
-                    $this->generateBibNumber($peserta);
-                }
-
                 // Kurangi stok size
                 $size = Size::find($peserta->size_id);
                 if ($size) {

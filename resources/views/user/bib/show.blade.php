@@ -8,7 +8,7 @@
             <div class="bg-white rounded-2xl shadow-xl p-6 md:p-10">
                 <div class="text-center mb-10">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Nomor BIB Anda</h2>
-                    <p class="text-gray-600 text-lg">Download dan pasang di bagian depan baju saat event</p>
+                    <p class="text-gray-600 text-lg"></p>
                 </div>
 
                 <div class="mx-auto" style="max-width: 600px;">
@@ -20,7 +20,7 @@
                             <!-- Header with logos -->
                             <div class="bg-white h-12 px-3 flex justify-between items-center">
                                 <div class="flex gap-2">
-                                    <img src="{{ asset('Images/logo_dyza.png') }}" class="h-8">
+                                    <img src="{{ asset('Images/logobderma.png') }}" class="h-8">
                                     <img src="{{ asset('Images/logo_dyza.png') }}" class="h-8">
                                 </div>
                                 <img src="{{ asset('Images/1.png') }}" class="h-8">
@@ -29,10 +29,10 @@
                             <!-- Gradient background with number -->
                             <div
                                 class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 h-[calc(100%-4.5rem)] flex flex-col items-center justify-center mb-[20px]">
-                                <div class="text-[40px] font-black text-black leading-none">
+                                <div class="text-[40px] font-bold text-white leading-none">
                                     {{ str_pad($peserta->kode_bib, 3, '0', STR_PAD_LEFT) }}
                                 </div>
-                                <div class="text-base font-bold text-black lowercase mt-[-8px]">
+                                <div class="text-base font-bold text-white lowercase mt-[-8px]">
                                     {{ $peserta->nama_bib }}
                                 </div>
                                 <div class="mt-[-5px]">
@@ -84,7 +84,7 @@
                                 <div
                                     class="bg-white h-16 px-4 flex justify-between items-center border-b-2 border-yellow-400">
                                     <div class="flex gap-4">
-                                        <img src="{{ asset('Images/logo_dyza.png') }}" class="h-12">
+                                        <img src="{{ asset('Images/logobderma.png') }}" class="h-12">
                                         <img src="{{ asset('Images/logo_dyza.png') }}" class="h-12">
                                     </div>
                                     <img src="{{ asset('Images/1.png') }}" class="h-12">
@@ -93,10 +93,10 @@
                                 <div class="flex-1 flex items-center justify-center">
                                     <div class="text-center flex flex-col items-center">
                                         <div class="flex flex-col items-center">
-                                            <div class="text-[100px] font-black text-black mt-[-40px]">
+                                            <div class="text-[100px] font-bold text-white mt-[-40px]">
                                                 {{ str_pad($peserta->kode_bib, 3, '0', STR_PAD_LEFT) }}
                                             </div>
-                                            <div class="text-xl font-bold text-black lowercase -mt-[30px]">
+                                            <div class="text-xl font-bold text-white uppercase -mt-[30px]">
                                                 {{ $peserta->nama_bib }}
                                             </div>
                                         </div>

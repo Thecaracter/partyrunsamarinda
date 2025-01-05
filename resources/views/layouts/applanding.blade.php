@@ -39,7 +39,7 @@
                         <!-- Social Links -->
                         <ul class="hidden md:flex items-center space-x-4">
                             <li>
-                                <a href="https://www.instagram.com/" target="_blank"
+                                <a href="https://www.instagram.com/party.run.smr" target="_blank"
                                     class="text-2xl hover:text-blue-600 transition-colors">
                                     <i class="fab fa-instagram"></i>
                                 </a>
@@ -163,18 +163,18 @@
                         <ul class="space-y-2">
                             <li class="flex items-center space-x-2">
                                 <i class="fab fa-instagram"></i>
-                                <a href="https://www.instagram.com/"
-                                    class="text-gray-400 hover:text-white transition-colors">@partycolorrun</a>
+                                <a href="https://www.instagram.com/party.run.smr"
+                                    class="text-gray-400 hover:text-white transition-colors">@party.run.smr</a>
                             </li>
-                            <li class="flex items-center space-x-2">
-                                <i class="fab fa-whatsapp"></i>
-                                <span class="text-gray-400">+62 xxx xxxx xxxx</span>
-                            </li>
+                            <!--<li class="flex items-center space-x-2">-->
+                            <!--    <i class="fab fa-whatsapp"></i>-->
+                            <!--    <span class="text-gray-400"></span>-->
+                            <!--</li>-->
                         </ul>
                     </div>
                 </div>
                 <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-                    <p>&copy; {{ date('Y') }} Party Color Run. All rights reserved.</p>
+                    <p>&copy; {{ date('Y') }} Event Experienced by SKY7.</p>
                 </div>
             </div>
         </footer>

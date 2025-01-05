@@ -1,7 +1,7 @@
 @extends('layouts.applanding')
 
 @section('content')
-    <div class="min-h-screen bg-gradient-to-br from-pink-500 to-pink-400 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-blue-500 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto">
             <!-- Card Container -->
             <div class="bg-white rounded-2xl shadow-xl p-6 md:p-10">
@@ -9,7 +9,7 @@
                 <div class="text-center max-w-2xl mx-auto px-4 py-12">
                     <!-- Title with subtle animation on hover -->
                     <h2
-                        class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-8 hover:scale-105 transform transition-all duration-300">
+                        class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-8 hover:scale-105 transform transition-all duration-300">
                         Check Order Status
                     </h2>
 
@@ -25,7 +25,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
-                                <span>Silahkan Check Email Anda Untuk Mendapatkan Kode BIB</span>
+                                <span>No BIB Akan Diberikan Saat Race Pack Collection</span>
                             </p>
                         </div>
 
@@ -39,7 +39,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
-                                <span>Masukkan kode BIB untuk melihat detail pendaftaran Anda</span>
+                                <span>Masukkan No WA untuk melihat detail pendaftaran Anda</span>
                             </p>
                         </div>
                     </div>
@@ -89,19 +89,18 @@
                 <form action="{{ route('check-order.index') }}" method="GET" class="max-w-2xl mx-auto space-y-6 mb-10">
                     <div>
                         <label class="block text-gray-700 text-lg font-semibold mb-2">
-                            Kode BIB
+                            Nomor WhatsApp
                         </label>
-                        <input type="text" name="kode_bib" value="{{ request('kode_bib') }}"
-                            class="w-full h-14 px-4 rounded-xl border-2 border-gray-300 focus:border-pink-500 focus:ring focus:ring-pink-200 transition duration-200"
-                            placeholder="Masukkan kode BIB Anda">
+                        <input type="text" name="no_wa" value="{{ request('no_wa') }}"
+                            class="w-full h-14 px-4 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-200"
+                            placeholder="Masukkan nomor WhatsApp Anda">
                     </div>
 
                     <button type="submit"
-                        class="w-full bg-pink-600 text-white py-4 rounded-xl text-lg font-semibold hover:bg-pink-700 transition-all duration-200 transform hover:scale-105">
+                        class="w-full bg-blue-600 text-white py-4 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all duration-200 transform hover:scale-105">
                         Cek Status
                     </button>
                 </form>
-
                 @if ($peserta)
                     <!-- Detail Info -->
                     <div class="border-t pt-10">
@@ -230,10 +229,10 @@
                                 </div>
 
                                 @if ($peserta->status_pembayaran === 'paid')
-                                    <div class="pt-6">
+                                    {{-- <div class="pt-6">
                                         <p class="text-gray-600">Kode BIB</p>
-                                        <p class="text-2xl font-bold text-pink-600">{{ $peserta->kode_bib }}</p>
-                                    </div>
+                                        <p class="text-2xl font-bold text-blue-600">{{ $peserta->kode_bib }}</p>
+                                    </div> --}}
 
                                     <div>
                                         <p class="text-gray-600">Tanggal Pembayaran</p>
@@ -256,16 +255,15 @@
                         </div>
 
                         <!-- BIB Download Section for Paid Status -->
-                        @if ($peserta->status_pembayaran === 'paid')
+                        {{-- @if ($peserta->status_pembayaran === 'paid')
                             <div class="mt-10 pt-10 border-t">
                                 <div class="max-w-2xl mx-auto text-center">
                                     <h3 class="text-2xl font-bold text-gray-900 mb-4">Download Nomor BIB Anda</h3>
                                     <p class="text-gray-600 mb-6">
-                                        Silakan download dan cetak nomor BIB Anda menggunakan kertas minimal 100gsm.<br>
-                                        Pasang nomor BIB di bagian depan baju menggunakan peniti saat event.
+                                        Silakan download dan cetak nomor BIB Anda dan bawa pada saat Registrasi ulang
                                     </p>
                                     <a href="{{ route('bib.show', $peserta->id) }}"
-                                        class="inline-flex items-center bg-pink-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-pink-700 transition-all duration-200 transform hover:scale-105">
+                                        class="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all duration-200 transform hover:scale-105">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -275,7 +273,7 @@
                                     </a>
                                 </div>
                             </div>
-                        @endif
+                        @endif --}}
                     </div>
                 @endif
             </div>

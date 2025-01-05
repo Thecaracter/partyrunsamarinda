@@ -61,7 +61,7 @@
             </div>
         </div>
     </div>
-    <div class="pt-28 min-h-screen bg-gradient-to-br from-pink-500 to-pink-400 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="pt-28 min-h-screen bg-blue-500 py-12 px-4 sm:px-6 lg:px-8">
         <!-- Alert Container -->
         <div id="alertContainer" class="max-w-4xl mx-auto mb-4" style="display: none;">
             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg">
@@ -171,7 +171,7 @@
                                     <option value="" disabled selected>Pilih kategori</option>
                                     <option value="Pelajar">Pelajar</option>
                                     <option value="Umum">Umum</option>
-                                    <option value="Master">Master</option>
+
                                 </select>
                             </div>
 
@@ -217,7 +217,7 @@
 
                         <div class="flex justify-end mt-12">
                             <button type="button" onclick="submitStep1()"
-                                class="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-pink-600 rounded-xl hover:bg-pink-700 transition-all duration-200 transform hover:scale-105">
+                                class="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-xl hover:bg-pink-700 transition-all duration-200 transform hover:scale-105">
                                 Lanjutkan
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20"
                                     fill="currentColor">
@@ -304,7 +304,7 @@
                                 Kembali
                             </button>
                             <button type="button" onclick="submitStep2()"
-                                class="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-pink-600 rounded-xl hover:bg-pink-700 transition-all duration-200 transform hover:scale-105">
+                                class="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-xl hover:bg-pink-700 transition-all duration-200 transform hover:scale-105">
                                 Lanjutkan
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20"
                                     fill="currentColor">
@@ -377,7 +377,8 @@
                                             class="mt-1 h-5 w-5 text-pink-600 rounded focus:ring-pink-500">
                                         <span class="ml-3 text-gray-700">
                                             Saya telah membaca dan menyetujui
-                                            <a href="#" target="_blank"
+                                            <a href="https://drive.google.com/file/d/1qx19LOIo55rgfGh7aHPirM2PfvmO3Dmj/view?usp=share_link"
+                                                target="_blank"
                                                 class="text-pink-600 font-semibold hover:text-pink-700 underline">
                                                 syarat dan ketentuan
                                             </a>

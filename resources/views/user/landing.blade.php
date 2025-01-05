@@ -3,28 +3,35 @@
 @section('title', 'Home')
 
 @section('content')
+
+
+
     <!-- Hero Section -->
-    <section class="min-h-screen lg:min-h-[760px] pt-20 lg:pt-28 pb-20 text-white relative overflow-hidden"
-        style="background-image: url('{{ asset('Images/10.png') }}'); background-size: cover; background-position: center;">
-        <div class="container relative h-full px-4 mx-auto text-gray-900">
-            <img src="{{ asset('Images/Fest-Logo.png') }}" alt=""
-                class="absolute hidden lg:block -left-20 xl:-left-64 top-64 opacity-30 h-48 xl:h-72" />
+    <section class="hero-section" style="background-color: white;">
+
+        <div class="container relative h-full text-gray-900">
+            <!-- Menambahkan gambar di dalam Hero Section -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <img src="Images/hero1.png" alt="Gambar Utama" style="width: 100vw; height: 100vh; object-fit: cover;">
+            </div>
+
 
             <div class="relative flex flex-col justify-center h-full px-4 sm:px-8 lg:px-16">
-                <h2 class="mb-4 text-3xl sm:text-5xl lg:text-7xl 2xl:text-8xl font-bold leading-tight text-white">
+                <h2 class="mb-4 text-3xl sm:text-5xl lg:text-7xl 2xl:text-8xl font-bold leading-tight text-black">
                     PARTY COLOR RUN <br class="hidden sm:block"> SAMARINDA
                 </h2>
 
+
                 <div class="flex flex-col sm:flex-row gap-4 mt-6">
-                    <a href="{{ route('registrasi.index') }}" class="w-full sm:w-auto">
-                        <button
-                            class="w-full sm:w-auto border-2 bg-blue-600 border-white text-white hover:bg-blue-700 hover:scale-105 transition-all duration-300 py-3 px-6 rounded-md font-bold shadow-lg">
-                            Registration
-                        </button>
+                    <!--<a href="{{ route('registrasi.index') }}" class="w-full sm:w-auto">-->
+                    <button
+                        class="w-full sm:w-auto border-2 bg-blue-600 border-white text-white hover:bg-blue-700 hover:scale-105 transition-all duration-300 py-3 px-6 rounded-md font-bold shadow-lg">
+                        Registration Closed Sementara
+                    </button>
                     </a>
                     <a href="/check-order" class="w-full sm:w-auto">
                         <button
-                            class="w-full sm:w-auto border-2 border-white bg-transparent text-white hover:bg-white/10 hover:scale-105 transition-all duration-300 py-3 px-6 rounded-md font-bold backdrop-blur-sm">
+                            class="w-full sm:w-auto border-2 border-blue-500 bg-transparent text-blue-600 hover:bg-white/10 hover:scale-105 transition-all duration-300 py-3 px-6 rounded-md font-bold backdrop-blur-sm">
                             Check Order
                         </button>
                     </a>
@@ -33,24 +40,118 @@
         </div>
     </section>
 
+
+    <style>
+        /* Mengatur background agar responsif */
+        .hero-section {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            padding-top: 150px;
+            width: 100%;
+            position: relative;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Mengatur gambar di dalam hero section agar responsif */
+        .hero-section img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Menangani posisi gambar agar selalu berada di tengah */
+        .hero-section .absolute {
+            position: absolute;
+            top: 110%;
+            left: 40%;
+            transform: translate(-40%, -50%);
+            width: 100%;
+        }
+
+
+        /* Menangani responsivitas di perangkat mobile */
+        @media (max-width: 768px) {
+            .hero-section {
+                background-position: top;
+                padding-top: 90px;
+            }
+
+            .hero-section .absolute {
+                width: 100%;
+                /* Gambar lebih kecil pada perangkat mobile */
+                top: 120%;
+                left: 40%;
+            }
+        }
+
+        /* Mengatur gambar di dalam hero section untuk desktop */
+        @media (min-width: 1024px) {
+            .hero-section .absolute img {
+                max-width: 300%;
+                /* Membatasi lebar gambar menjadi maksimal 50% pada desktop */
+                height: auto;
+            }
+        }
+    </style>
+
+
+
     <!-- Presented By Section -->
-    <section class="py-10 sm:py-14 lg:py-20" style="background: linear-gradient(45deg, #FF1493, #FF69B4);">
+    <section class="py-10 sm:py-14 lg:py-20" style="background-color: #ffffff;">
         <div class="px-4 sm:px-8 lg:px-28">
             <div class="mb-8 sm:mb-12 text-center">
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">Presented By</h2>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-black">Presented By</h2>
             </div>
             <div class="flex justify-center items-center">
-                <img src="{{ asset('Images/logo_dyza.png') }}" alt=""
-                    class="px-4 sm:px-6 max-h-8 sm:max-h-12 lg:max-h-16 w-auto" style="">
-                <img src="{{ asset('Images/logo_dyza.png') }}" alt=""
-                    class="px-4 sm:px-6 max-h-8 sm:max-h-12 lg:max-h-16 w-auto" style="">
+                <img src="{{ asset('Images/logorevisi.png') }}" alt="" class="px-4 sm:px-6 logo-size w-auto">
             </div>
+
+            <!--<img src="{{ asset('Images/logo_dyza.png') }}" alt=""-->
+            <!--    class="px-4 sm:px-6 max-h-8 sm:max-h-12 lg:max-h-16 w-auto" style="">-->
         </div>
+
     </section>
+
+    <style>
+        /* Mengatur ukuran logo untuk berbagai ukuran layar */
+        .logo-size {
+            max-height: 6rem;
+            /* Default tinggi maksimum */
+            transition: all 0.3s ease;
+            /* Transisi halus untuk perubahan ukuran */
+        }
+
+        @media (max-width: 768px) {
+            .logo-size {
+                max-height: 6rem;
+                /* Lebih kecil pada perangkat mobile */
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .logo-size {
+                max-height: 5rem;
+                /* Sedikit lebih besar pada tablet */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .logo-size {
+                max-height: 8rem;
+                /* Ukuran default yang lebih besar untuk desktop */
+            }
+        }
+    </style>
+
+
+
+
 
     <!-- Welcome Section -->
     <section class="py-10 sm:py-14 lg:py-24 text-white relative"
-        style="background-image: url('{{ asset('Images/3.png') }}'); background-size: cover; background-position: center;">
+        style="background-image: url('{{ asset('Images/el-02.png') }}'); background-size: cover; background-position: center;">
         <div class="absolute inset-0 bg-black/30"></div>
         <div class="container px-4 sm:px-8 lg:px-28 mx-auto relative z-10">
             <div class="flex flex-col items-center">
@@ -71,21 +172,24 @@
     <!-- Categories Section -->
     <section class="py-10 sm:py-14 lg:py-24 bg-white text-zinc-900">
         <div class="container px-4 mx-auto">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            <div class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-4 gap-8 justify-items-center">
                 <div class="w-full max-w-xs">
-                    <img src="{{ asset('Images/pelajar.png') }}" alt="Pelajar" class="w-full h-auto" />
+                    <img src="{{ asset('Images/el-03.png') }}" alt="Pelajar" class="w-full h-auto" />
                 </div>
                 <div class="w-full max-w-xs">
-                    <img src="{{ asset('Images/umum.png') }}" alt="Umum" class="w-full h-auto" />
+                    <img src="{{ asset('Images/el-04.png') }}" alt="Umum" class="w-full h-auto" />
                 </div>
-                <div class="w-full max-w-xs sm:col-span-2 lg:col-span-1">
-                    <img src="{{ asset('Images/master.png') }}" alt="Master" class="w-full h-auto" />
+                <div class="w-full max-w-xs">
+                    <img src="{{ asset('Images/el-05.png') }}" alt="Umum" class="w-full h-auto" />
                 </div>
+                <div class="w-full max-w-xs">
+                    <img src="{{ asset('Images/el-06.png') }}" alt="Umum" class="w-full h-auto" />
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Countdown Section -->
     <!-- Countdown Section -->
     <section class="py-10 sm:py-14 lg:py-24 bg-blue-500 text-[#FFD942]">
         <div class="container px-4 sm:px-8 lg:px-28 mx-auto">
@@ -95,7 +199,7 @@
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight mb-6">Count down to race Day</h2>
                     <p class="text-base sm:text-lg">
                         Time is ticking, and spots are filling up fast! Secure your place, mark your calendar,
-                        and get ready to experience the Active Festival Samarinda like never before.
+                        and get ready to experience the PARTY COLOR RUN SAMARINDA.
                     </p>
                     <div class="flex flex-wrap gap-4 py-6">
                         <a href="/event">
@@ -168,7 +272,7 @@
                     hours: 0,
                     minutes: 0,
                     seconds: 0,
-                    targetDate: new Date('2025-02-02T00:00:00').getTime(),
+                    targetDate: new Date('2025-02-23T00:00:00').getTime(),
 
                     init() {
                         this.updateCountdown();

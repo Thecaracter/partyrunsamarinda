@@ -67,20 +67,35 @@ class Peserta extends Model
 
     public function generateBibCode()
     {
-        $lastBib = self::where('kode_bib', '!=', null)
-            ->orderBy('kode_bib', 'desc')
-            ->first();
+        // Kunci global untuk generate BIB, timeout 3 detik
+        $lock = \Illuminate\Support\Facades\Cache::lock('generate-bib-lock', 3);
 
-        if ($lastBib) {
-            $nextNumber = intval($lastBib->kode_bib) + 1;
-            if ($nextNumber > 29999) {
-                throw new \Exception('BIB code limit reached');
-            }
-        } else {
-            $nextNumber = 20001;
+        try {
+            // Mencoba mendapatkan lock dengan timeout 1 detik
+            $lock->block(1);
+
+            \Illuminate\Support\Facades\DB::transaction(function () {
+                $lastBib = self::where('kode_bib', '!=', null)
+                    ->orderBy('kode_bib', 'desc')
+                    ->lockForUpdate()
+                    ->first();
+
+                if ($lastBib) {
+                    $nextNumber = intval($lastBib->kode_bib) + 1;
+                    if ($nextNumber > 29999) {
+                        throw new \Exception('BIB code limit reached');
+                    }
+                } else {
+                    $nextNumber = 20001;
+                }
+
+                $this->kode_bib = sprintf("%05d", $nextNumber);
+                $this->save();
+
+            }, 2);
+        } finally {
+            optional($lock)->release();
         }
-
-        $this->kode_bib = sprintf("%05d", $nextNumber);
     }
 
     public function size()
