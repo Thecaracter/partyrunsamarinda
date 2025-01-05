@@ -2,7 +2,8 @@
 
 @section('content')
     <div class="grid gap-6 p-6">
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Total Peserta Card -->
             <div class="bg-white rounded-lg shadow p-5">
                 <div class="flex items-center">
                     <div class="p-3 rounded-full bg-purple-50">
@@ -12,13 +13,13 @@
                         </svg>
                     </div>
                     <div class="ml-5">
-                        <div class="text-gray-500 text-sm">Total Peserta</div>
+                        <div class="text-gray-500 text-sm">Total Peserta (Paid)</div>
                         <div class="text-2xl font-bold text-gray-900">{{ number_format($totalPeserta) }}</div>
-                        <div class="text-sm text-gray-600">{{ number_format($lastMonthPeserta) }} bulan ini</div>
                     </div>
                 </div>
             </div>
 
+            <!-- Check In Card -->
             <div class="bg-white rounded-lg shadow p-5">
                 <div class="flex items-center">
                     <div class="p-3 rounded-full bg-green-50">
@@ -31,29 +32,30 @@
                         <div class="text-gray-500 text-sm">Check In</div>
                         <div class="text-2xl font-bold text-gray-900">{{ number_format($checkInStats['total_checked_in']) }}
                         </div>
-                        <div class="text-sm text-gray-600">dari {{ number_format($totalPeserta) }} peserta</div>
+                        <div class="text-sm">dari {{ number_format($totalPeserta) }} peserta</div>
                     </div>
                 </div>
             </div>
 
+            <!-- Jersey Stock -->
             <div class="bg-white rounded-lg shadow p-5">
                 <div class="flex items-center">
                     <div class="p-3 rounded-full bg-blue-50">
                         <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                         </svg>
                     </div>
                     <div class="ml-5">
-                        <div class="text-gray-500 text-sm">Pembayaran</div>
-                        <div class="text-2xl font-bold text-gray-900">{{ number_format($totalPaid) }}</div>
-                        <div class="text-sm text-gray-600">{{ number_format($totalPending) }} pending</div>
+                        <div class="text-gray-500 text-sm">Total Jersey Terjual</div>
+                        <div class="text-2xl font-bold text-gray-900">{{ number_format($totalPeserta) }}</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Jersey Stock -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-medium mb-4">Jersey Stock</h3>
                 <div class="space-y-4">
@@ -65,14 +67,15 @@
                                     tersisa</span>
                             </div>
                             <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                                <div>Stock: {{ number_format($jersey['stock']) }}</div>
-                                <div>Terpakai: {{ number_format($jersey['used']) }}</div>
+                                <div>Total Stock: {{ number_format($jersey['total_stock']) }}</div>
+                                <div>Terjual: {{ number_format($jersey['used']) }}</div>
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
 
+            <!-- Kategori Distribution -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-medium mb-4">Distribusi Kategori</h3>
                 <div class="h-80 w-full">
@@ -80,6 +83,7 @@
                 </div>
             </div>
 
+            <!-- Age Distribution -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-medium mb-4">Distribusi Usia</h3>
                 <div class="h-80 w-full">
@@ -87,6 +91,7 @@
                 </div>
             </div>
 
+            <!-- Registration Trends -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-medium mb-4">Tren Registrasi (30 Hari Terakhir)</h3>
                 <div class="h-80 w-full">
@@ -94,6 +99,7 @@
                 </div>
             </div>
 
+            <!-- Province Distribution -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-medium mb-4">Distribusi Provinsi</h3>
                 <div class="h-80 w-full">
@@ -101,6 +107,7 @@
                 </div>
             </div>
 
+            <!-- Payment Methods -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-medium mb-4">Metode Pembayaran</h3>
                 <div class="h-80 w-full">
@@ -108,6 +115,7 @@
                 </div>
             </div>
 
+            <!-- Blood Types -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-medium mb-4">Distribusi Golongan Darah</h3>
                 <div class="h-80 w-full">
@@ -115,6 +123,7 @@
                 </div>
             </div>
 
+            <!-- Medical Stats -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-medium mb-4">Statistik Medis</h3>
                 <div class="h-80 w-full">
@@ -138,17 +147,10 @@
                                 data: {!! json_encode($categoryDistribution->pluck('total')) !!},
                                 backgroundColor: [
                                     'rgba(59, 130, 246, 0.8)', // Blue
-                                    'rgba(16, 185, 129, 0.8)', // Green  
+                                    'rgba(16, 185, 129, 0.8)', // Green
                                     'rgba(239, 68, 68, 0.8)', // Red
                                     'rgba(245, 158, 11, 0.8)' // Orange
-                                ],
-                                borderColor: [
-                                    'rgb(59, 130, 246)',
-                                    'rgb(16, 185, 129)',
-                                    'rgb(239, 68, 68)',
-                                    'rgb(245, 158, 11)'
-                                ],
-                                borderWidth: 1
+                                ]
                             }]
                         },
                         options: {
@@ -179,8 +181,7 @@
                                 backgroundColor: 'rgba(59, 130, 246, 0.8)',
                                 borderColor: 'rgb(59, 130, 246)',
                                 borderWidth: 1,
-                                borderRadius: 5,
-                                barPercentage: 0.6
+                                borderRadius: 5
                             }]
                         },
                         options: {
@@ -384,48 +385,6 @@
                             },
                             scales: {
                                 x: {
-                                    grid: {
-                                        display: false
-                                    }
-                                },
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        display: false
-                                    }
-                                }
-                            }
-                        }
-                    });
-
-                    // Check-in by Hour Chart
-                    new Chart(document.getElementById('checkInChart'), {
-                        type: 'line',
-                        data: {
-                            labels: {!! json_encode($checkInStats['check_in_by_hour']->pluck('hour')) !!},
-                            datasets: [{
-                                label: 'Check-in',
-                                data: {!! json_encode($checkInStats['check_in_by_hour']->pluck('total')) !!},
-                                borderColor: 'rgb(59, 130, 246)',
-                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                                fill: true,
-                                tension: 0.4
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            },
-                            scales: {
-                                x: {
-                                    title: {
-                                        display: true,
-                                        text: 'Jam'
-                                    },
                                     grid: {
                                         display: false
                                     }
