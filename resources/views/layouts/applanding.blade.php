@@ -58,10 +58,10 @@
                             <a class="border border-black hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors py-2 px-4 rounded-md"
                                 href="/check-order">Check Order</a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a class="bg-black text-white hover:bg-blue-800 transition-colors py-2 px-4 rounded-md"
                                 href="{{ route('registrasi.index') }}">Register</a>
-                        </li>
+                        </li> --}}
                     </ul>
 
                     <!-- Mobile Menu Button -->
