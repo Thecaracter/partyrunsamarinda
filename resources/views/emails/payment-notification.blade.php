@@ -29,14 +29,14 @@
                 </div>
 
                 <div style="padding: 30px; background: linear-gradient(135deg, #ffffff, #F2FCFD);">
-                    <div
-                        style="background: linear-gradient(135deg, #3171DC, #141B9C); color: white; padding: 25px; border-radius: 1rem; text-align: center; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);">
-                        <div style="font-size: 20px; color: #FFFFFF;">Nomor BIB</div>
-                        {{-- <div style="font-size: 36px; font-weight: bold; margin-top: 10px; color: #FFFFFF;">
+                    {{-- <div
+                    style="background: linear-gradient(135deg, #3171DC, #141B9C); color: white; padding: 25px; border-radius: 1rem; text-align: center; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);">
+                    <div style="font-size: 20px; color: #FFFFFF;">Nomor BIB</div>
+                    <div style="font-size: 36px; font-weight: bold; margin-top: 10px; color: #FFFFFF;">
                         {{ $peserta->kode_bib ?? 'Akan diberikan setelah pembayaran' }}
-                    </div> --}}
-
                     </div>
+
+                </div> --}}
                     <div style="text-align: center; margin-bottom: 30px;">
                         <span
                             style="background: {{ $peserta->status_pembayaran === 'paid' ? 'linear-gradient(135deg, #86efac, #22c55e)' : 'linear-gradient(135deg, #f9a8d4, #ec4899)' }}; color: white; padding: 10px 30px; border-radius: 9999px; font-weight: 600; font-size: 16px; box-shadow: 0 2px 10px {{ $peserta->status_pembayaran === 'paid' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(236, 72, 153, 0.2)' }};">{{ $peserta->status_pembayaran === 'paid' ? 'Pembayaran Lunas' : 'Menunggu Pembayaran' }}</span>

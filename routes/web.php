@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\User\BibController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\SizeController;
@@ -88,4 +89,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         // Export Route
         Route::get('/export-excel', [AdminController::class, 'exportExcel'])->name('export.excel');
     });
+});
+// Tambahkan use statement
+Route::prefix('admin/email')->as('admin.email.')->group(function () {
+    Route::get('/', [EmailController::class, 'showEmailDashboard'])->name('index');
+    Route::post('/send-single', [EmailController::class, 'sendSingleEmail'])->name('send-single');
+    Route::get('/blast', [EmailController::class, 'blastEmails'])->name('blast');
 });
