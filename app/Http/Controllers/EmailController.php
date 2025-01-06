@@ -65,25 +65,49 @@ class EmailController extends Controller
             ->get();
 
         return response()->stream(function () use ($pesertaList) {
-            foreach ($pesertaList as $peserta) {
+            $totalSent = 0;
+
+            foreach ($pesertaList as $index => $peserta) {
+                if (connection_aborted()) {
+                    return;
+                }
+
+                if ($totalSent > 0 && $totalSent % 100 === 0) {
+                    $log = [
+                        'status' => 'pause',
+                        'message' => "Jeda 3 menit setelah mengirim $totalSent email...",
+                        'totalSent' => $totalSent,
+                        'remaining' => count($pesertaList) - $totalSent
+                    ];
+                    echo "data: " . json_encode($log) . "\n\n";
+                    ob_flush();
+                    flush();
+                    sleep(180);
+                }
+
                 try {
                     Mail::to($peserta->email)->send(new PaymentNotification($peserta));
+                    $totalSent++;
                     $log = [
                         'status' => 'success',
-                        'email' => $peserta->email
+                        'email' => $peserta->email,
+                        'totalSent' => $totalSent,
+                        'remaining' => count($pesertaList) - $totalSent
                     ];
                 } catch (Exception $e) {
                     $log = [
                         'status' => 'failed',
                         'email' => $peserta->email,
-                        'error' => $this->getMailTransportError($e)
+                        'error' => $this->getMailTransportError($e),
+                        'totalSent' => $totalSent,
+                        'remaining' => count($pesertaList) - $totalSent
                     ];
                 }
 
                 echo "data: " . json_encode($log) . "\n\n";
                 ob_flush();
                 flush();
-                usleep(100000);
+                usleep(600000);
             }
         }, 200, [
             'Cache-Control' => 'no-cache',

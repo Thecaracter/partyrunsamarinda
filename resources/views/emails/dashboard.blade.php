@@ -9,14 +9,21 @@
             <!-- Control Buttons -->
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-gray-800">Pengiriman Email</h2>
-                <div class="space-x-4">
-                    <button id="blastButton" onclick="startEmailBlast()"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                        Kirim Semua
-                    </button>
-                    <button onclick="clearConsole()" class="px-4 py-2 text-gray-700 hover:text-gray-900">
-                        Clear
-                    </button>
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">Pengiriman Email</h2>
+                    <div class="space-x-4">
+                        <button id="blastButton" onclick="startEmailBlast()"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            Kirim Semua
+                        </button>
+                        <button id="stopButton" disabled
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50">
+                            Stop
+                        </button>
+                        <button onclick="clearConsole()" class="px-4 py-2 text-gray-700 hover:text-gray-900">
+                            Clear
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -137,19 +144,39 @@
 
             function startEmailBlast() {
                 const button = document.getElementById('blastButton');
+                const stopButton = document.getElementById('stopButton');
                 button.disabled = true;
                 button.textContent = 'Mengirim...';
+                stopButton.disabled = false;
+
+                let eventSource;
+
+                function stopBlast() {
+                    if (eventSource) {
+                        eventSource.close();
+                        log('⛔ Pengiriman email dihentikan manual');
+                        button.disabled = false;
+                        button.textContent = 'Kirim Semua';
+                        stopButton.disabled = true;
+                    }
+                }
 
                 log('Memulai pengiriman email ke semua peserta...');
 
-                const eventSource = new EventSource('/admin/email/blast');
+                eventSource = new EventSource('/admin/email/blast');
 
                 eventSource.onmessage = function(event) {
                     const data = JSON.parse(event.data);
-                    if (data.status === 'success') {
+
+                    if (data.status === 'pause') {
+                        log(`⏸️ ${data.message}`);
+                        log(`📊 Total terkirim: ${data.totalSent}, Sisa: ${data.remaining}`);
+                    } else if (data.status === 'success') {
                         log(`✅ Email berhasil dikirim ke ${data.email}`);
+                        log(`📊 Total terkirim: ${data.totalSent}, Sisa: ${data.remaining}`);
                     } else {
                         log(`❌ Gagal mengirim email ke ${data.email}: ${data.error}`);
+                        log(`📊 Total terkirim: ${data.totalSent}, Sisa: ${data.remaining}`);
                     }
                 };
 
@@ -158,7 +185,10 @@
                     eventSource.close();
                     button.disabled = false;
                     button.textContent = 'Kirim Semua';
+                    stopButton.disabled = true;
                 };
+
+                document.getElementById('stopButton').onclick = stopBlast;
             }
         </script>
     @endpush
