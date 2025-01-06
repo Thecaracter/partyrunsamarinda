@@ -76,16 +76,16 @@
 
 @push('scripts')
     {{-- Loading Overlay HTML --}}
-    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-[60]">
         <div class="text-center">
             <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
             <p class="mt-2 text-white font-semibold">Mohon tunggu...</p>
         </div>
     </div>
 
-    {{-- Payment Alert --}}
+    {{-- Payment Alert dengan scroll --}}
     <div id="paymentAlert"
-        class="fixed top-0 left-0 right-0 z-50 transform -translate-y-full transition-transform duration-500">
+        class="fixed top-0 left-0 right-0 bottom-0 z-50 transform -translate-y-full transition-transform duration-500 bg-white/95 overflow-y-auto">
         <!-- Menggunakan padding yang responsif -->
         <div class="max-w-4xl mx-auto bg-white border-l-4 border-yellow-400 rounded-b-xl shadow-2xl m-2 sm:m-4">
             <div class="p-3 sm:p-4 md:p-6">
@@ -93,7 +93,7 @@
                 <div class="flex flex-col sm:flex-row items-start">
                     <!-- Icon - Hidden di mobile, tampil di desktop -->
                     <div class="hidden sm:block flex-shrink-0">
-                        <div class="bg-yellow-100 p-3 rounded-full">
+                        <div class="bg-yellow-100 p-3 rounded-full sticky top-4">
                             <svg class="h-6 w-6 sm:h-8 sm:w-8 text-yellow-500" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -105,7 +105,7 @@
                     <!-- Main Content dengan spacing responsif -->
                     <div class="w-full sm:ml-4 flex-grow">
                         <!-- Header dengan ukuran font responsif -->
-                        <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center justify-between mb-4 sticky top-0 bg-white z-10 py-2">
                             <h3 class="text-lg sm:text-xl font-bold text-yellow-800 flex items-center">
                                 <span>🎫 Panduan & Persiapan Pembayaran</span>
                             </h3>
@@ -224,7 +224,7 @@
                         </div>
 
                         <!-- Button Section -->
-                        <div class="mt-4 sm:mt-6">
+                        <div class="mt-4 sm:mt-6 sticky bottom-0 bg-white pt-4 pb-2 z-10">
                             <button id="proceedPayment"
                                 class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white px-4 sm:px-8 py-3 sm:py-4 rounded-xl text-base sm:text-lg font-bold transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center">
                                 <span>Saya Siap, Lanjutkan Pembayaran</span>
@@ -240,7 +240,7 @@
                     <!-- Close Button - Hidden di mobile -->
                     <div class="hidden sm:block ml-4">
                         <button id="closeAlert"
-                            class="text-gray-400 hover:text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors duration-200">
+                            class="text-gray-400 hover:text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors duration-200 sticky top-4">
                             <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path
                                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" />
@@ -292,6 +292,8 @@
             function showAlert() {
                 paymentAlert.classList.remove('-translate-y-full');
                 paymentAlert.classList.add('translate-y-0');
+                // Reset scroll position when showing alert
+                paymentAlert.scrollTo(0, 0);
             }
 
             function hideAlert() {
@@ -380,6 +382,20 @@
             if (proceedPayment) {
                 proceedPayment.addEventListener('click', initializePayment);
             }
+
+            // Handle scroll untuk sticky header dan button
+            const header = document.querySelector('.sticky');
+            const button = document.querySelector('#proceedPayment').parentElement;
+
+            paymentAlert.addEventListener('scroll', function() {
+                if (header) {
+                    if (paymentAlert.scrollTop > 0) {
+                        header.classList.add('shadow-md');
+                    } else {
+                        header.classList.remove('shadow-md');
+                    }
+                }
+            });
 
             async function updateStatus(status, result = {}) {
                 showLoading();
