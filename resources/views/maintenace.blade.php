@@ -20,12 +20,11 @@
 
                 <!-- Maintenance Text -->
                 <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                    Website Sedang Dalam Perbaikan
+                    Registration Closed
                 </h1>
 
                 <p class="text-xl text-gray-600 mb-8">
-                    Mohon maaf atas ketidaknyamanannya. Website PARTY RUN sedang dalam perbaikan untuk memberikan pengalaman
-                    yang lebih baik untuk Anda.
+                    Pendaftaran Ditutup
                 </p>
 
                 <!-- Estimated Time -->
@@ -34,7 +33,7 @@
                         Perkiraan Waktu
                     </h3>
                     <p class="text-blue-600">
-                        Website akan kembali online dalam waktu <span class="font-bold">24 jam</span>
+                        Akan Dibuka Kembali <span class="font-bold">Segera</span>
                     </p>
                 </div>
 
