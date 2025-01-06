@@ -15,8 +15,8 @@ class RegistrasiController extends Controller
     {
         $sizes = Size::where('stock', '>', 0)->get();
         $registrationFee = number_format(config('registration.fee'), 0, ',', '.');
-        // return view('user.registrasi', compact('sizes', 'registrationFee'));
-        return view('maintenace', compact('sizes', 'registrationFee'));
+        return view('user.registrasi', compact('sizes', 'registrationFee'));
+        // return view('maintenace', compact('sizes', 'registrationFee'));
     }
 
     public function getProvinces()
@@ -74,25 +74,25 @@ class RegistrasiController extends Controller
     public function saveStep1(Request $request)
     {
         try {
-            // Cek email yang sudah terdaftar
-            $existingUser = Peserta::where('email', $request->email)->first();
+            // Cek no_wa yang sudah terdaftar
+            $existingPhone = Peserta::where('no_wa', $request->no_wa)->first();
 
-            if ($existingUser) {
+            if ($existingPhone) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Validasi gagal pada field: email',
+                    'message' => 'No Wa/telepon tidak boleh sama',
                     'errors' => [
-                        'email' => [
+                        'no_wa' => [
                             sprintf(
-                                'Email %s sudah terdaftar atas nama %s pada tanggal %s. Silakan gunakan email lain atau hubungi panitia jika ini adalah email Anda.',
-                                $request->email,
-                                $existingUser->nama_lengkap,
-                                $existingUser->created_at->format('d-m-Y H:i')
+                                'Nomor WhatsApp %s sudah terdaftar atas nama %s pada tanggal %s. Silakan gunakan nomor lain atau hubungi panitia jika ini adalah nomor Anda.',
+                                $request->no_wa,
+                                $existingPhone->nama_lengkap,
+                                $existingPhone->created_at->format('d-m-Y H:i')
                             )
                         ]
                     ],
-                    'error_fields' => ['email'],
-                    'submitted_data' => $request->only(['email'])
+                    'error_fields' => ['no_wa'],
+                    'submitted_data' => $request->only(['no_wa'])
                 ], 422);
             }
 
@@ -100,7 +100,12 @@ class RegistrasiController extends Controller
                 'nama_lengkap' => 'required|string|max:255',
                 'nama_bib' => 'required|string|max:255',
                 'email' => 'required|email',
-                'no_wa' => ['required', 'string', 'regex:/^(\+62|62|0)[0-9]{9,12}$/'],
+                'no_wa' => [
+                    'required',
+                    'string',
+                    'regex:/^(\+62|62|0)[0-9]{9,12}$/',
+                    'unique:pesertas,no_wa'
+                ],
                 'usia' => 'required|numeric|min:1|max:150',
                 'kategori' => 'required|in:Pelajar,Umum,Master',
                 'size_id' => 'required|exists:sizes,id',
@@ -114,6 +119,7 @@ class RegistrasiController extends Controller
                 'email.email' => 'Format email tidak valid',
                 'no_wa.required' => 'Nomor WhatsApp wajib diisi',
                 'no_wa.regex' => 'Format nomor WhatsApp tidak valid (contoh: 08123456789)',
+                'no_wa.unique' => 'Nomor WhatsApp sudah terdaftar',
                 'usia.required' => 'Usia wajib diisi',
                 'usia.numeric' => 'Usia harus berupa angka',
                 'usia.min' => 'Usia minimal 1 tahun',

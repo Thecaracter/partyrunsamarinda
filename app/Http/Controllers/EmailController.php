@@ -13,7 +13,7 @@ class EmailController extends Controller
     public function showEmailDashboard(Request $request)
     {
         $search = $request->input('search');
-        $perPage = 10;
+        $perPage = 2;
 
         $query = Peserta::whereNotNull('kode_bib')
             ->where('status_pembayaran', 'paid');
@@ -58,35 +58,39 @@ class EmailController extends Controller
         }
     }
 
-    public function blastEmails()
+    public function blastEmails(Request $request)
     {
-        $pesertaList = Peserta::whereNotNull('kode_bib')
-            ->where('status_pembayaran', 'paid')
-            ->get();
+        // Ambil parameter page dan search dari request
+        $page = $request->get('page', 1);
+        $search = $request->get('search');
+        $perPage = 2;
 
-        \Log::info("Starting email blast for " . count($pesertaList) . " recipients");
+        // Buat query dasar
+        $query = Peserta::whereNotNull('kode_bib')
+            ->where('status_pembayaran', 'paid');
+
+        // Tambahkan filter pencarian jika ada
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('kode_bib', 'like', "%{$search}%");
+            });
+        }
+
+        // Ambil data sesuai halaman yang aktif
+        $pesertaList = $query->paginate($perPage)->items();
+
+        \Log::info("Starting email blast for " . count($pesertaList) . " recipients from page " . $page);
 
         return response()->stream(function () use ($pesertaList) {
             $totalSent = 0;
+            $totalToSend = count($pesertaList);
 
             foreach ($pesertaList as $index => $peserta) {
                 if (connection_aborted()) {
                     \Log::info("Connection aborted");
                     return;
-                }
-
-                if ($totalSent > 0 && $totalSent % 100 === 0) {
-                    \Log::info("Pausing for 3 minutes after $totalSent emails");
-                    $log = [
-                        'status' => 'pause',
-                        'message' => "Jeda 3 menit setelah mengirim $totalSent email...",
-                        'totalSent' => $totalSent,
-                        'remaining' => count($pesertaList) - $totalSent
-                    ];
-                    echo "data: " . json_encode($log) . "\n\n";
-                    ob_flush();
-                    flush();
-                    sleep(180);
                 }
 
                 try {
@@ -97,25 +101,43 @@ class EmailController extends Controller
                     $log = [
                         'status' => 'success',
                         'email' => $peserta->email,
+                        'nama' => $peserta->nama_lengkap,
+                        'kode_bib' => $peserta->kode_bib,
                         'totalSent' => $totalSent,
-                        'remaining' => count($pesertaList) - $totalSent
+                        'remaining' => $totalToSend - $totalSent,
+                        'percentage' => round(($totalSent / $totalToSend) * 100)
                     ];
                 } catch (Exception $e) {
                     \Log::error("Failed sending to {$peserta->email}: " . $e->getMessage());
                     $log = [
                         'status' => 'failed',
                         'email' => $peserta->email,
+                        'nama' => $peserta->nama_lengkap,
+                        'kode_bib' => $peserta->kode_bib,
                         'error' => $this->getMailTransportError($e),
                         'totalSent' => $totalSent,
-                        'remaining' => count($pesertaList) - $totalSent
+                        'remaining' => $totalToSend - $totalSent,
+                        'percentage' => round(($totalSent / $totalToSend) * 100)
                     ];
                 }
 
                 echo "data: " . json_encode($log) . "\n\n";
                 ob_flush();
                 flush();
-                usleep(600000);
+                usleep(300000); // 300ms delay antar email
             }
+
+            // Send completion message
+            $log = [
+                'status' => 'completed',
+                'message' => "Pengiriman email selesai",
+                'totalSent' => $totalSent,
+                'totalFailed' => $totalToSend - $totalSent
+            ];
+            echo "data: " . json_encode($log) . "\n\n";
+            ob_flush();
+            flush();
+
         }, 200, [
             'Cache-Control' => 'no-cache',
             'Content-Type' => 'text/event-stream',

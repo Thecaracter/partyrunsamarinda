@@ -114,7 +114,7 @@
 
                     <!-- Check Order Button -->
                     <div style="text-align: center; margin-top: 20px;">
-                        <a href="https://partycolorbderma.com/check-order?no_wa={{ $peserta->no_wa }}"
+                        <a href="https://partycolorbderma.com/check-order?no_wa={{ $peserta->no_wa }}&email={{ $peserta->email }}"
                             style="display: inline-block; width: 80%; max-width: 300px; background: #ec4899; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: clamp(14px, 3vw, 16px);">
                             Cek Status Pendaftaran
                         </a>
