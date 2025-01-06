@@ -94,6 +94,12 @@
                         <input type="text" name="no_wa" value="{{ request('no_wa') }}"
                             class="w-full h-14 px-4 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-200"
                             placeholder="Masukkan nomor WhatsApp Anda">
+                        <label class="block text-gray-700 text-lg font-semibold mb-2">
+                            Email
+                        </label>
+                        <input type="text" name="email" value="{{ request('email') }}"
+                            class="w-full h-14 px-4 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-200"
+                            placeholder="Masuk Email Anda">
                     </div>
 
                     <button type="submit"

@@ -11,8 +11,10 @@ class CheckOrderController extends Controller
     public function index()
     {
         $peserta = null;
-        if (request('no_wa')) {
-            $peserta = Peserta::where('no_wa', request('no_wa'))->first();
+        if (request('no_wa') && request('email')) {
+            $peserta = Peserta::where('no_wa', request('no_wa'))
+                ->where('email', request('email'))
+                ->first();
             if (!$peserta) {
                 return back()->with('error', 'Nomor WhatsApp tidak ditemukan');
             }
