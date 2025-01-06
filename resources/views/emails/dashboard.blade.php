@@ -21,7 +21,7 @@
             </div>
 
             <!-- Console Output -->
-            <div id="console" class="h-[400px] overflow-y-auto bg-black rounded-xl p-4 font-mono text-sm"></div>
+            <div id="console" class="h-[400px] overflow-auto bg-black rounded-xl p-4 font-mono text-sm"></div>
 
             <!-- Daftar Peserta -->
             <div class="mt-6">
@@ -100,7 +100,7 @@
             function log(message) {
                 const timestamp = new Date().toLocaleTimeString();
                 const logEntry = document.createElement('div');
-                logEntry.className = 'text-white';
+                logEntry.className = 'text-white mb-1';
                 logEntry.textContent = `[${timestamp}] ${message}`;
                 consoleDiv.appendChild(logEntry);
                 consoleDiv.scrollTop = consoleDiv.scrollHeight;
