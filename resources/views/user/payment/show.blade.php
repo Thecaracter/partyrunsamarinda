@@ -83,6 +83,175 @@
         </div>
     </div>
 
+    {{-- Payment Alert --}}
+    <div id="paymentAlert"
+        class="fixed top-0 left-0 right-0 z-50 transform -translate-y-full transition-transform duration-500">
+        <!-- Menggunakan padding yang responsif -->
+        <div class="max-w-4xl mx-auto bg-white border-l-4 border-yellow-400 rounded-b-xl shadow-2xl m-2 sm:m-4">
+            <div class="p-3 sm:p-4 md:p-6">
+                <!-- Flex container utama -->
+                <div class="flex flex-col sm:flex-row items-start">
+                    <!-- Icon - Hidden di mobile, tampil di desktop -->
+                    <div class="hidden sm:block flex-shrink-0">
+                        <div class="bg-yellow-100 p-3 rounded-full">
+                            <svg class="h-6 w-6 sm:h-8 sm:w-8 text-yellow-500" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Main Content dengan spacing responsif -->
+                    <div class="w-full sm:ml-4 flex-grow">
+                        <!-- Header dengan ukuran font responsif -->
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg sm:text-xl font-bold text-yellow-800 flex items-center">
+                                <span>🎫 Panduan & Persiapan Pembayaran</span>
+                            </h3>
+                            <!-- Close button untuk mobile -->
+                            <button id="closeAlert"
+                                class="sm:hidden text-gray-400 hover:text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full p-2">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Grid yang responsif -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+                            <!-- Left Column -->
+                            <div class="space-y-3 sm:space-y-4">
+                                <!-- Waktu & Peringatan -->
+                                <div
+                                    class="bg-gradient-to-r from-red-50 to-red-100 p-3 sm:p-4 rounded-xl border border-red-200 shadow-sm">
+                                    <p
+                                        class="font-bold text-red-700 text-base sm:text-lg flex flex-wrap items-center gap-2">
+                                        ⚠️ PENTING!
+                                        <span
+                                            class="text-xs sm:text-sm bg-red-200 text-red-800 px-2 sm:px-3 py-1 rounded-full">Harap
+                                            Dibaca</span>
+                                    </p>
+                                    <ul class="list-none mt-2 text-xs sm:text-sm text-red-600 space-y-2">
+                                        <li class="flex items-center">
+                                            <span class="mr-2">⏰</span>
+                                            <span>Waktu pembayaran hanya <span
+                                                    class="font-bold bg-red-200 px-2 py-0.5 rounded">5 MENIT!</span></span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="mr-2">⛔</span>
+                                            <span>JANGAN tutup halaman website ini</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="mr-2">🚫</span>
+                                            <span>JANGAN bersihkan/clear data browser</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="mr-2">📱</span>
+                                            <span>Jika menggunakan HP, biarkan browser tetap aktif</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Persiapan -->
+                                <div
+                                    class="bg-gradient-to-r from-yellow-50 to-yellow-100 p-3 sm:p-4 rounded-xl border border-yellow-200 shadow-sm">
+                                    <p class="font-semibold text-yellow-800 text-base sm:text-lg">
+                                        ✅ Checklist Persiapan
+                                    </p>
+                                    <ul class="list-none mt-2 text-xs sm:text-sm text-yellow-700 space-y-2">
+                                        <li class="flex items-center">
+                                            <span class="mr-2">📱</span>
+                                            <span>Aplikasi m-banking sudah terbuka & siap</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="mr-2">🏧</span>
+                                            <span>Dekat dengan ATM (jika bayar via ATM)</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="mr-2">💰</span>
+                                            <span>Saldo mencukupi untuk pembayaran</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="mr-2">📶</span>
+                                            <span>Koneksi internet stabil & lancar</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="space-y-3 sm:space-y-4">
+                                <!-- Panduan -->
+                                <div
+                                    class="bg-gradient-to-r from-blue-50 to-blue-100 p-3 sm:p-4 rounded-xl border border-blue-200 shadow-sm">
+                                    <p class="font-semibold text-blue-800 text-base sm:text-lg">
+                                        📝 Langkah Pembayaran
+                                    </p>
+                                    <ul class="list-none mt-2 text-xs sm:text-sm text-blue-700 space-y-2">
+                                        <li class="flex items-start">
+                                            <span class="mr-2 font-bold">1.</span>
+                                            <span>Klik tombol "Saya Siap, Lanjutkan" di bawah</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="mr-2 font-bold">2.</span>
+                                            <span>Pilih metode pembayaran yang tersedia</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="mr-2 font-bold">3.</span>
+                                            <span>Ikuti petunjuk pembayaran dengan teliti</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="mr-2 font-bold">4.</span>
+                                            <span>Selesaikan pembayaran dalam 5 menit</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Catatan -->
+                                <div
+                                    class="bg-gradient-to-r from-gray-50 to-gray-100 p-3 sm:p-4 rounded-xl border border-gray-200 shadow-sm">
+                                    <p class="font-semibold text-gray-700 text-base sm:text-lg mb-2">
+                                        💡 Catatan Penting
+                                    </p>
+                                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                                        Jika halaman tertutup tidak sengaja, Anda dapat membuka kembali melalui riwayat
+                                        browser atau tab yang masih aktif. Namun ingat, batas waktu 5 menit tetap berjalan!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Button Section -->
+                        <div class="mt-4 sm:mt-6">
+                            <button id="proceedPayment"
+                                class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white px-4 sm:px-8 py-3 sm:py-4 rounded-xl text-base sm:text-lg font-bold transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center">
+                                <span>Saya Siap, Lanjutkan Pembayaran</span>
+                                <svg class="ml-2 h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Close Button - Hidden di mobile -->
+                    <div class="hidden sm:block ml-4">
+                        <button id="closeAlert"
+                            class="text-gray-400 hover:text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors duration-200">
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @if (config('midtrans.is_production'))
         <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.current_client_key') }}">
         </script>
@@ -95,6 +264,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             const payButton = document.querySelector('#pay-button');
             const loadingOverlay = document.querySelector('#loadingOverlay');
+            const paymentAlert = document.querySelector('#paymentAlert');
+            const closeAlert = document.querySelector('#closeAlert');
+            const proceedPayment = document.querySelector('#proceedPayment');
             let currentStatus = 'initial';
 
             function showLoading() {
@@ -117,79 +289,96 @@
                 }
             }
 
+            function showAlert() {
+                paymentAlert.classList.remove('-translate-y-full');
+                paymentAlert.classList.add('translate-y-0');
+            }
+
+            function hideAlert() {
+                paymentAlert.classList.remove('translate-y-0');
+                paymentAlert.classList.add('-translate-y-full');
+            }
+
+            function initializePayment() {
+                hideAlert();
+                showLoading();
+
+                setTimeout(() => {
+                    hideLoading();
+                    snap.pay('{{ $snapToken }}', {
+                        skipOrderSummary: true,
+                        autoCloseDelay: 3,
+                        onSuccess: async function(result) {
+                            showLoading();
+                            try {
+                                const response = await fetch(
+                                    '/payment/{{ $peserta->id }}/update-status', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Accept': 'application/json',
+                                            'X-CSRF-TOKEN': document.querySelector(
+                                                'meta[name="csrf-token"]').content
+                                        },
+                                        body: JSON.stringify({
+                                            transaction_status: result
+                                                .transaction_status,
+                                            transaction_id: result.transaction_id,
+                                            payment_type: result.payment_type,
+                                            gross_amount: result.gross_amount
+                                        })
+                                    });
+
+                                if (!response.ok) {
+                                    throw new Error('Gagal mengupdate status');
+                                }
+
+                                currentStatus = 'success';
+                                window.location.href =
+                                    '{{ route('check-order.index') }}?kode_bib={{ $peserta->kode_bib }}';
+                            } catch (error) {
+                                console.error('Error:', error);
+                                alert('Terjadi kesalahan saat memproses pembayaran');
+                                hideLoading();
+                            }
+                        },
+                        onPending: function(result) {
+                            showLoading();
+                            currentStatus = 'pending';
+                            updateStatus('pending', result);
+                        },
+                        onError: function(result) {
+                            showLoading();
+                            currentStatus = 'failed';
+                            updateStatus('failed', result);
+                        },
+                        onClose: function() {
+                            if (!['success', 'pending', 'failed'].includes(currentStatus)) {
+                                setTimeout(() => {
+                                    snap.pay('{{ $snapToken }}');
+                                }, 100);
+                            }
+                        }
+                    });
+                }, 500);
+            }
+
+            // Event listener untuk tombol "Bayar Sekarang"
             if (payButton) {
                 payButton.addEventListener('click', function(e) {
                     e.preventDefault();
-                    showLoading();
-
-                    setTimeout(() => {
-                        hideLoading();
-                        snap.pay('{{ $snapToken }}', {
-                            skipOrderSummary: true,
-                            autoCloseDelay: 3,
-                            onSuccess: async function(result) {
-                                showLoading();
-                                try {
-                                    const response = await fetch(
-                                        '/payment/{{ $peserta->id }}/update-status', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'Accept': 'application/json',
-                                                'X-CSRF-TOKEN': document
-                                                    .querySelector(
-                                                        'meta[name="csrf-token"]')
-                                                    .content
-                                            },
-                                            body: JSON.stringify({
-                                                transaction_status: result
-                                                    .transaction_status,
-                                                transaction_id: result
-                                                    .transaction_id,
-                                                payment_type: result
-                                                    .payment_type,
-                                                gross_amount: result
-                                                    .gross_amount
-                                            })
-                                        });
-
-                                    if (!response.ok) {
-                                        throw new Error('Gagal mengupdate status');
-                                    }
-
-                                    currentStatus = 'success';
-                                    window.location.href =
-                                        '{{ route('check-order.index') }}?kode_bib={{ $peserta->kode_bib }}';
-                                } catch (error) {
-                                    console.error('Error:', error);
-                                    alert(
-                                        'Terjadi kesalahan saat memproses pembayaran'
-                                    );
-                                    hideLoading();
-                                }
-                            },
-                            onPending: function(result) {
-                                showLoading();
-                                currentStatus = 'pending';
-                                updateStatus('pending', result);
-                            },
-                            onError: function(result) {
-                                showLoading();
-                                currentStatus = 'failed';
-                                updateStatus('failed', result);
-                            },
-                            onClose: function() {
-                                // Jika pembayaran belum selesai, buka kembali Snap
-                                if (!['success', 'pending', 'failed'].includes(
-                                        currentStatus)) {
-                                    setTimeout(() => {
-                                        snap.pay('{{ $snapToken }}');
-                                    }, 100);
-                                }
-                            }
-                        });
-                    }, 500);
+                    showAlert(); // Tampilkan notifikasi dulu
                 });
+            }
+
+            // Event listener untuk tombol close di notifikasi
+            if (closeAlert) {
+                closeAlert.addEventListener('click', hideAlert);
+            }
+
+            // Event listener untuk tombol "Saya Siap, Lanjutkan"
+            if (proceedPayment) {
+                proceedPayment.addEventListener('click', initializePayment);
             }
 
             async function updateStatus(status, result = {}) {

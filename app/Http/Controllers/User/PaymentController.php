@@ -37,6 +37,14 @@ class PaymentController extends Controller
                 $peserta->update(['status_pembayaran' => 'pending']);
             }
 
+
+
+            $expiry = [
+                'start_time' => date('Y-m-d H:i:s O'),
+                'unit' => 'minute',
+                'duration' => 5
+            ];
+
             $params = [
                 'transaction_details' => [
                     'order_id' => 'REG-' . $peserta->id . '-' . time(),
@@ -56,6 +64,7 @@ class PaymentController extends Controller
                         'category' => $peserta->kategori
                     ]
                 ],
+                'expiry' => $expiry
             ];
 
             $snapToken = Snap::getSnapToken($params);
