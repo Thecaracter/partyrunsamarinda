@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Mail\PaymentNotification;
 use App\Models\Peserta;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Exception;
 
 class EmailController extends Controller
 {
     public function showEmailDashboard(Request $request)
     {
         $search = $request->input('search');
+        $perPage = 10;
 
         $query = Peserta::whereNotNull('kode_bib')
             ->where('status_pembayaran', 'paid');
@@ -25,12 +26,11 @@ class EmailController extends Controller
             });
         }
 
-        $pesertaDenganBib = $query->get();
+        $pesertaDenganBib = $query->paginate($perPage);
 
         return view('emails.dashboard', compact('pesertaDenganBib', 'search'));
     }
 
-    // method lainnya tetap sama
     public function sendSingleEmail(Request $request)
     {
         $request->validate([
@@ -47,11 +47,12 @@ class EmailController extends Controller
                     'email' => $peserta->email
                 ]
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'log' => [
-                    'email' => $peserta->email ?? 'unknown'
+                    'email' => $peserta->email ?? 'unknown',
+                    'error' => $this->getMailTransportError($e)
                 ]
             ], 500);
         }
@@ -71,10 +72,11 @@ class EmailController extends Controller
                         'status' => 'success',
                         'email' => $peserta->email
                     ];
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $log = [
                         'status' => 'failed',
-                        'email' => $peserta->email
+                        'email' => $peserta->email,
+                        'error' => $this->getMailTransportError($e)
                     ];
                 }
 
@@ -88,5 +90,40 @@ class EmailController extends Controller
             'Content-Type' => 'text/event-stream',
             'X-Accel-Buffering' => 'no'
         ]);
+    }
+
+    private function getMailTransportError(Exception $e)
+    {
+        $message = $e->getMessage();
+
+        if (str_contains($message, 'Connection could not be established')) {
+            return 'Gagal terhubung ke server SMTP. Periksa konfigurasi email.';
+        }
+
+        if (str_contains($message, 'Connection timed out')) {
+            return 'Koneksi ke server SMTP timeout. Coba lagi nanti.';
+        }
+
+        if (str_contains($message, 'Failed to authenticate')) {
+            return 'Gagal autentikasi SMTP. Periksa username/password email.';
+        }
+
+        if (str_contains($message, 'Invalid address')) {
+            return 'Alamat email tidak valid.';
+        }
+
+        if (str_contains($message, 'Mailbox unavailable')) {
+            return 'Email tujuan tidak tersedia atau tidak aktif.';
+        }
+
+        if (str_contains($message, 'Quota exceeded')) {
+            return 'Kuota email sudah terlampaui.';
+        }
+
+        if (str_contains($message, 'Rate limit exceeded')) {
+            return 'Batas pengiriman email tercapai. Coba lagi nanti.';
+        }
+
+        return 'Error pengiriman email: ' . $message;
     }
 }

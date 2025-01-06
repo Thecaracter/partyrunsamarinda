@@ -84,6 +84,11 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Pagination -->
+                <div class="mt-4">
+                    {{ $pesertaDenganBib->links() }}
+                </div>
             </div>
         </div>
     </div>
@@ -93,9 +98,10 @@
             const consoleDiv = document.getElementById('console');
 
             function log(message) {
+                const timestamp = new Date().toLocaleTimeString();
                 const logEntry = document.createElement('div');
                 logEntry.className = 'text-white';
-                logEntry.textContent = message;
+                logEntry.textContent = `[${timestamp}] ${message}`;
                 consoleDiv.appendChild(logEntry);
                 consoleDiv.scrollTop = consoleDiv.scrollHeight;
             }
@@ -120,12 +126,12 @@
                     const data = await response.json();
 
                     if (data.success) {
-                        log(`Email dikirimkan ke ${data.log.email}`);
+                        log(`✅ Email berhasil dikirim ke ${data.log.email}`);
                     } else {
-                        log(`Gagal mengirim email ke ${data.log.email}`);
+                        log(`❌ Gagal mengirim email ke ${data.log.email}: ${data.log.error}`);
                     }
                 } catch (error) {
-                    log(`Gagal mengirim email: ${error.message}`);
+                    log(`❌ Error sistem: ${error.message}`);
                 }
             }
 
@@ -141,9 +147,9 @@
                 eventSource.onmessage = function(event) {
                     const data = JSON.parse(event.data);
                     if (data.status === 'success') {
-                        log(`Email dikirimkan ke ${data.email}`);
+                        log(`✅ Email berhasil dikirim ke ${data.email}`);
                     } else {
-                        log(`Gagal mengirim email ke ${data.email}`);
+                        log(`❌ Gagal mengirim email ke ${data.email}: ${data.error}`);
                     }
                 };
 
