@@ -13,7 +13,7 @@ class EmailController extends Controller
     public function showEmailDashboard(Request $request)
     {
         $search = $request->input('search');
-        $perPage = 2;
+        $perPage = 30;
 
         $query = Peserta::whereNotNull('kode_bib')
             ->where('status_pembayaran', 'paid');
@@ -63,7 +63,7 @@ class EmailController extends Controller
         // Ambil parameter page dan search dari request
         $page = $request->get('page', 1);
         $search = $request->get('search');
-        $perPage = 2;
+        $perPage = 30;
 
         // Buat query dasar
         $query = Peserta::whereNotNull('kode_bib')
