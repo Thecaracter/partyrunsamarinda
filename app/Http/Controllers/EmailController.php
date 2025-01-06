@@ -64,15 +64,19 @@ class EmailController extends Controller
             ->where('status_pembayaran', 'paid')
             ->get();
 
+        \Log::info("Starting email blast for " . count($pesertaList) . " recipients");
+
         return response()->stream(function () use ($pesertaList) {
             $totalSent = 0;
 
             foreach ($pesertaList as $index => $peserta) {
                 if (connection_aborted()) {
+                    \Log::info("Connection aborted");
                     return;
                 }
 
                 if ($totalSent > 0 && $totalSent % 100 === 0) {
+                    \Log::info("Pausing for 3 minutes after $totalSent emails");
                     $log = [
                         'status' => 'pause',
                         'message' => "Jeda 3 menit setelah mengirim $totalSent email...",
@@ -86,7 +90,9 @@ class EmailController extends Controller
                 }
 
                 try {
+                    \Log::info("Attempting to send email to: " . $peserta->email);
                     Mail::to($peserta->email)->send(new PaymentNotification($peserta));
+                    \Log::info("Email sent successfully to: " . $peserta->email);
                     $totalSent++;
                     $log = [
                         'status' => 'success',
@@ -95,6 +101,7 @@ class EmailController extends Controller
                         'remaining' => count($pesertaList) - $totalSent
                     ];
                 } catch (Exception $e) {
+                    \Log::error("Failed sending to {$peserta->email}: " . $e->getMessage());
                     $log = [
                         'status' => 'failed',
                         'email' => $peserta->email,
