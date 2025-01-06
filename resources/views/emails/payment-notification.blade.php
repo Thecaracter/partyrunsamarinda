@@ -17,8 +17,8 @@
                     style="position: absolute; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; top: -20px; left: -20px;">
                 </div>
                 <div style="margin-bottom: 10px;">
-                    <img src="https://res.cloudinary.com/djapytwxw/image/upload/v1735677699/8_qgho4b.png"
-                        alt="Party Color Run Logo" style="height: 60px; width: auto; max-width: 100%;">
+                    <img src="https://partycolorbderma.com/public/Images/1.png" alt="Party Color Run Logo"
+                        style="height: 60px; width: auto; max-width: 100%;">
                 </div>
                 <div>
                     <h1
