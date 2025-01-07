@@ -13,19 +13,25 @@
             <!-- Header Section -->
             <div
                 style="background: linear-gradient(135deg, #3171DC, #141B9C); color: white; padding: 20px 15px; text-align: center; position: relative; overflow: hidden;">
+                <!-- Lingkaran dekoratif -->
                 <div
                     style="position: absolute; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; top: -20px; left: -20px;">
                 </div>
+                <!-- Logo container -->
                 <div style="margin-bottom: 10px;">
                     <img src="https://partycolorbderma.com/public/Images/1.png" alt="Party Color Run Logo"
                         style="height: 60px; width: auto; max-width: 100%;">
                 </div>
+                <!-- Konten teks -->
                 <div>
                     <h1
                         style="margin: 0; font-size: clamp(24px, 5vw, 32px); font-weight: bold; position: relative; color: white;">
                         Party Color Run</h1>
                     <p style="font-size: clamp(16px, 4vw, 18px); margin-top: 10px; position: relative; color: white;">
                         Registrasi Anda telah dikonfirmasi</p>
+                    <!-- Tambahkan SVG di bawah text -->
+                    <img src="{{ asset('images/Route.svg') }}" alt="Confirmation Icon"
+                        style="height: 60px; width: auto; margin-top: 15px;">
                 </div>
             </div>
 
@@ -87,7 +93,8 @@
                         </tr>
                         <tr>
                             <td style="padding: 12px 0; color: #6b7280; vertical-align: top;">Provinsi</td>
-                            <td style="padding: 12px 0; font-weight: 600; color: #1f2937;">{{ $peserta->provinsi }}</td>
+                            <td style="padding: 12px 0; font-weight: 600; color: #1f2937;">{{ $peserta->provinsi }}
+                            </td>
                         </tr>
                         <tr>
                             <td style="padding: 12px 0; color: #6b7280; vertical-align: top;">Kota</td>
