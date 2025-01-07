@@ -29,9 +29,12 @@
                         Party Color Run</h1>
                     <p style="font-size: clamp(16px, 4vw, 18px); margin-top: 10px; position: relative; color: white;">
                         Registrasi Anda telah dikonfirmasi</p>
-                    <!-- Route image with larger size -->
-                    <img src="https://partycolorbderma.com/public/Images/Route1.png" alt="Confirmation Icon"
-                        style="height: 400px; width: 500px; margin-top: 15px; display: block; margin-right: auto; margin-left: 50px; object-fit: contain;">
+                    <!-- Route image with download link -->
+                    <a href="https://partycolorbderma.com/public/Images/Route.png" download
+                        style="display: block; text-align: left; margin-left: 20px;">
+                        <img src="https://partycolorbderma.com/public/Images/Route1.png" alt="Confirmation Icon"
+                            style="width: 90%; max-width: 500px; height: auto; margin-top: 15px; object-fit: contain;">
+                    </a>
                 </div>
             </div>
         </div>
