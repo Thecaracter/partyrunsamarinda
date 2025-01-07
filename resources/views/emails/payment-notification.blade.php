@@ -30,9 +30,9 @@
                     <p style="font-size: clamp(16px, 4vw, 18px); margin-top: 10px; position: relative; color: white;">
                         Registrasi Anda telah dikonfirmasi</p>
                     <!-- Route image with download link -->
-                    <a href="https://partycolorbderma.com/public/Images/baru1.png" download
+                    <a href="https://partycolorbderma.com/public/Images/baru2.png" download
                         style="display: block; text-align: center; width: 100%;">
-                        <img src="https://partycolorbderma.com/public/Images/baru1.png" alt="Confirmation Icon"
+                        <img src="https://partycolorbderma.com/public/Images/baru2.png" alt="Confirmation Icon"
                             style="width: 100%; min-width: 320px; max-width: 600px; height: auto; margin-top: 15px; object-fit: contain;">
                     </a>
                 </div>
