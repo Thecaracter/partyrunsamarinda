@@ -30,8 +30,8 @@
                     <p style="font-size: clamp(16px, 4vw, 18px); margin-top: 10px; position: relative; color: white;">
                         Registrasi Anda telah dikonfirmasi</p>
                     <!-- Tambahkan SVG di bawah text -->
-                    <img src="https://partycolorbderma.com/public/Images/Route.svg" alt="Confirmation Icon"
-                        style="height: 60px; width: auto; margin-top: 15px;">
+                    <img src="https://partycolorbderma.com/public/Images/Route.png" alt="Confirmation Icon"
+                        style="height: 60px; width: auto; margin-top: 15px; display: block; margin-left: auto; margin-right: auto;">
                 </div>
             </div>
 
