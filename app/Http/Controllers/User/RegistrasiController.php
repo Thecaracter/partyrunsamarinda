@@ -15,8 +15,8 @@ class RegistrasiController extends Controller
     {
         $sizes = Size::where('stock', '>', 0)->get();
         $registrationFee = number_format(config('registration.fee'), 0, ',', '.');
-        return view('user.registrasi', compact('sizes', 'registrationFee'));
-        // return view('maintenace', compact('sizes', 'registrationFee'));
+        // return view('user.registrasi', compact('sizes', 'registrationFee'));
+        return view('maintenace', compact('sizes', 'registrationFee'));
     }
 
     public function getProvinces()
