@@ -615,11 +615,20 @@
         }
 
         function updateParticipantTables(checkedInData, notCheckedInData) {
+            // Urutkan data berdasarkan kode_bib secara descending
+            const sortedCheckedIn = [...checkedInData].sort((a, b) =>
+                parseInt(b.kode_bib) - parseInt(a.kode_bib)
+            );
+
+            const sortedNotCheckedIn = [...notCheckedInData].sort((a, b) =>
+                parseInt(b.kode_bib) - parseInt(a.kode_bib)
+            );
+
             const checkedInBody = document.getElementById('checkedInTableBody');
             const notCheckedInBody = document.getElementById('notCheckedInTableBody');
 
             // Update checked in table
-            checkedInBody.innerHTML = checkedInData.map(participant => `
+            checkedInBody.innerHTML = sortedCheckedIn.map(participant => `
         <tr class="participant-row hover:bg-gray-50" onclick='showParticipantDetails(${JSON.stringify({
             ...participant,
             check_in_time: formatDateTime(participant.check_in_time)
@@ -643,7 +652,7 @@
     `).join('');
 
             // Update not checked in table
-            notCheckedInBody.innerHTML = notCheckedInData.map(participant => `
+            notCheckedInBody.innerHTML = sortedNotCheckedIn.map(participant => `
         <tr class="participant-row hover:bg-gray-50" onclick='showParticipantDetails(${JSON.stringify(participant)})'>
             <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm font-medium text-gray-900">${participant.kode_bib}</div>
@@ -1020,11 +1029,11 @@
                                 </div>
                             </div>
                             ${data.check_in_time ? `
-                                                                                                                                                    <div>
-                                                                                                                                                        <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                                                                                                        <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
-                                                                                                                                                    </div>
-                                                                                                                                                ` : ''}
+                                                                                                                                                        <div>
+                                                                                                                                                            <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                                                                                            <p class="mt-1 text-sm text-gray-900">${formatDateTime(data.check_in_time)}</p>
+                                                                                                                                                        </div>
+                                                                                                                                                    ` : ''}
                         </div>
 
                         <!-- Informasi Medis -->
@@ -1214,11 +1223,11 @@
                         </div>
                     </div>
                     ${participant.check_in_time ? `
-                                                                                                                                                <div>
-                                                                                                                                                    <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
-                                                                                                                                                    <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
-                                                                                                                                                </div>
-                                                                                                                                            ` : ''}
+                                                                                                                                                    <div>
+                                                                                                                                                        <label class="block text-sm font-medium text-gray-700">Waktu Check-in</label>
+                                                                                                                                                        <p class="mt-1 text-sm text-gray-900">${formatDateTime(participant.check_in_time)}</p>
+                                                                                                                                                    </div>
+                                                                                                                                                ` : ''}
                 </div>
 
                 <!-- Informasi Medis -->

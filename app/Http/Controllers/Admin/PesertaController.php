@@ -16,13 +16,13 @@ class PesertaController extends Controller
     {
         $checkedInPeserta = Peserta::with('size')
             ->where('is_checked_in', true)
-            ->orderBy('kode_bib', 'desc')
+            ->orderByRaw('CAST(kode_bib AS UNSIGNED) DESC')  // Menggunakan CAST untuk pengurutan numerik
             ->get();
 
         $notCheckedInPeserta = Peserta::with('size')
             ->where('is_checked_in', false)
             ->where('status_pembayaran', 'paid')
-            ->orderBy('kode_bib', 'desc')
+            ->orderByRaw('CAST(kode_bib AS UNSIGNED) DESC')  // Menggunakan CAST untuk pengurutan numerik
             ->get();
 
         return view('admin.peserta', compact('checkedInPeserta', 'notCheckedInPeserta'));
