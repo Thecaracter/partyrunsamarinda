@@ -140,21 +140,36 @@ class PaymentController extends Controller
     public function notification()
     {
         try {
+            // Log raw notification untuk debugging
+            \Log::info('Raw Notification:', request()->all());
+
             DB::beginTransaction();
 
-            $notifikasi = new Notification();
+            // Ambil data dari request langsung, bukan dari Notification class
+            $order_id = request('order_id');
+            $transaction_status = request('transaction_status');
+            $transaction_id = request('transaction_id');
+            $payment_type = request('payment_type');
+            $gross_amount = request('gross_amount');
 
-            $peserta_id = explode('-', $notifikasi->order_id)[1];
+            // Extract peserta_id dari order_id
+            $peserta_id = explode('-', $order_id)[1] ?? null;
+
+            if (!$peserta_id) {
+                \Log::error('Invalid order_id format:', ['order_id' => $order_id]);
+                return response()->json(['message' => 'Invalid order ID format'], 400);
+            }
+
             $peserta = Peserta::find($peserta_id);
 
             if (!$peserta) {
-                \Log::error('Peserta tidak ditemukan:', ['order_id' => $notifikasi->order_id]);
+                \Log::error('Peserta tidak ditemukan:', ['order_id' => $order_id, 'peserta_id' => $peserta_id]);
                 return response()->json(['message' => 'Peserta tidak ditemukan'], 404);
             }
 
             $oldStatus = $peserta->status_pembayaran;
 
-            $status = match ($notifikasi->transaction_status) {
+            $status = match ($transaction_status) {
                 'capture', 'settlement' => 'paid',
                 'pending' => 'pending',
                 'deny', 'cancel' => 'failed',
@@ -162,12 +177,19 @@ class PaymentController extends Controller
                 default => 'failed'
             };
 
+            \Log::info('Updating payment status:', [
+                'peserta_id' => $peserta->id,
+                'old_status' => $oldStatus,
+                'new_status' => $status,
+                'transaction_id' => $transaction_id
+            ]);
+
             $peserta->update([
                 'status_pembayaran' => $status,
                 'payment_date' => now(),
-                'midtrans_transaction_id' => $notifikasi->transaction_id,
-                'midtrans_payment_type' => $notifikasi->payment_type,
-                'amount' => $notifikasi->gross_amount
+                'midtrans_transaction_id' => $transaction_id,
+                'midtrans_payment_type' => $payment_type,
+                'amount' => $gross_amount
             ]);
 
             if ($status === 'paid' && $oldStatus !== 'paid') {
@@ -186,11 +208,12 @@ class PaymentController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Kesalahan Notifikasi Midtrans:', [
-                'pesan' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+            \Log::error('Kesalahan Notifikasi:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request' => request()->all()
             ]);
-            return response()->json(['message' => 'Gagal memproses notifikasi: ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Gagal memproses notifikasi'], 500);
         }
     }
 
