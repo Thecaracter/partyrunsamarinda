@@ -268,14 +268,24 @@
             const closeAlert = document.querySelector('#closeAlert');
             const proceedPayment = document.querySelector('#proceedPayment');
             let currentStatus = 'initial';
+            let isProcessing = false;
+
+            function disablePaymentButtons() {
+                if (payButton) {
+                    payButton.disabled = true;
+                    payButton.classList.add('opacity-50', 'cursor-not-allowed');
+                    payButton.innerHTML = 'Sedang Memproses...';
+                }
+                if (proceedPayment) {
+                    proceedPayment.disabled = true;
+                    proceedPayment.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
 
             function showLoading() {
                 if (loadingOverlay) {
                     loadingOverlay.classList.remove('hidden');
                     loadingOverlay.classList.add('flex');
-                }
-                if (payButton) {
-                    payButton.disabled = true;
                 }
             }
 
@@ -284,15 +294,12 @@
                     loadingOverlay.classList.add('hidden');
                     loadingOverlay.classList.remove('flex');
                 }
-                if (payButton) {
-                    payButton.disabled = false;
-                }
             }
 
             function showAlert() {
+                if (isProcessing) return; // Cek jika sedang proses
                 paymentAlert.classList.remove('-translate-y-full');
                 paymentAlert.classList.add('translate-y-0');
-                // Reset scroll position when showing alert
                 paymentAlert.scrollTo(0, 0);
             }
 
@@ -302,98 +309,67 @@
             }
 
             function initializePayment() {
+                if (isProcessing) return; // Cek jika sedang proses
+
+                isProcessing = true;
+                disablePaymentButtons();
                 hideAlert();
                 showLoading();
 
-                setTimeout(() => {
-                    hideLoading();
-                    snap.pay('{{ $snapToken }}', {
-                        skipOrderSummary: true,
-                        autoCloseDelay: 3,
-                        onSuccess: async function(result) {
-                            showLoading();
-                            try {
-                                // const response = await fetch(
-                                //     '/payment/{{ $peserta->id }}/update-status', {
-                                //         method: 'POST',
-                                //         headers: {
-                                //             'Content-Type': 'application/json',
-                                //             'Accept': 'application/json',
-                                //             'X-CSRF-TOKEN': document.querySelector(
-                                //                 'meta[name="csrf-token"]').content
-                                //         },
-                                //         body: JSON.stringify({
-                                //             transaction_status: result
-                                //                 .transaction_status,
-                                //             transaction_id: result.transaction_id,
-                                //             payment_type: result.payment_type,
-                                //             gross_amount: result.gross_amount
-                                //         })
-                                //     });
-
-                                // if (!response.ok) {
-                                //     throw new Error('Gagal mengupdate status');
-                                // }
-
-                                // currentStatus = 'success';
-                                // window.location.href =
-                                //     '{{ route('check-order.index') }}?kode_bib={{ $peserta->kode_bib }}';
-                            } catch (error) {
-                                console.error('Error:', error);
-                                alert('Terjadi kesalahan saat memproses pembayaran');
-                                hideLoading();
-                            }
-                        },
-                        onPending: function(result) {
-                            showLoading();
-                            currentStatus = 'pending';
-                            updateStatus('pending', result);
-                        },
-                        onError: function(result) {
-                            showLoading();
-                            currentStatus = 'failed';
-                            updateStatus('failed', result);
-                        },
-                        onClose: function() {
-                            if (!['success', 'pending', 'failed'].includes(currentStatus)) {
-                                setTimeout(() => {
-                                    snap.pay('{{ $snapToken }}');
-                                }, 100);
-                            }
+                // Langsung tampilkan popup Midtrans tanpa delay
+                snap.pay('{{ $snapToken }}', {
+                    skipOrderSummary: true,
+                    onSuccess: async function(result) {
+                        try {
+                            await updateStatus('success', result);
+                            window.location.href =
+                                '{{ route('check-order.index') }}?kode_bib={{ $peserta->kode_bib }}';
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('Terjadi kesalahan saat memproses pembayaran');
                         }
-                    });
-                }, 500);
-            }
+                    },
+                    onPending: async function(result) {
+                        currentStatus = 'pending';
+                        await updateStatus('pending', result);
+                    },
+                    onError: async function(result) {
+                        currentStatus = 'failed';
+                        await updateStatus('failed', result);
+                    },
+                    onClose: function() {
 
-            // Event listener untuk tombol "Bayar Sekarang"
-            if (payButton) {
-                payButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    showAlert(); // Tampilkan notifikasi dulu
+                    }
                 });
             }
 
-            // Event listener untuk tombol close di notifikasi
+            // Event Listeners
+            if (payButton) {
+                payButton.addEventListener('click', function(e) {
+                    if (isProcessing) return;
+                    e.preventDefault();
+                    showAlert();
+                });
+            }
+
+            if (proceedPayment) {
+                proceedPayment.addEventListener('click', function(e) {
+                    if (isProcessing) return;
+                    initializePayment();
+                });
+            }
+
             if (closeAlert) {
                 closeAlert.addEventListener('click', hideAlert);
             }
 
-            // Event listener untuk tombol "Saya Siap, Lanjutkan"
-            if (proceedPayment) {
-                proceedPayment.addEventListener('click', initializePayment);
-            }
-
-            // Handle scroll untuk sticky header dan button
+            // Handle scroll
             const header = document.querySelector('.sticky');
-            const button = document.querySelector('#proceedPayment').parentElement;
-
             paymentAlert.addEventListener('scroll', function() {
-                if (header) {
-                    if (paymentAlert.scrollTop > 0) {
-                        header.classList.add('shadow-md');
-                    } else {
-                        header.classList.remove('shadow-md');
-                    }
+                if (header && paymentAlert.scrollTop > 0) {
+                    header.classList.add('shadow-md');
+                } else if (header) {
+                    header.classList.remove('shadow-md');
                 }
             });
 
@@ -414,6 +390,8 @@
                             gross_amount: result.gross_amount
                         })
                     });
+
+                    if (!response.ok) throw new Error('Gagal mengupdate status');
 
                     if (status !== 'cancelled') {
                         window.location.href =
