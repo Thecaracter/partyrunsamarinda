@@ -16,18 +16,17 @@ class PesertaController extends Controller
     {
         $checkedInPeserta = Peserta::with('size')
             ->where('is_checked_in', true)
-            ->latest('check_in_time')
+            ->orderBy('kode_bib', 'desc')
             ->get();
 
         $notCheckedInPeserta = Peserta::with('size')
             ->where('is_checked_in', false)
             ->where('status_pembayaran', 'paid')
-            ->latest()
+            ->orderBy('kode_bib', 'desc')
             ->get();
 
         return view('admin.peserta', compact('checkedInPeserta', 'notCheckedInPeserta'));
     }
-
     /**
      * Get participant data by BIB number
      */
@@ -64,12 +63,12 @@ class PesertaController extends Controller
      */
     public function scanBib(Request $request)
     {
-        // Validate the request
+
         $request->validate([
             'kode_bib' => 'required|string'
         ]);
 
-        // Find participant by BIB code
+
         $peserta = Peserta::where('kode_bib', $request->kode_bib)->first();
 
         if (!$peserta) {
@@ -79,7 +78,7 @@ class PesertaController extends Controller
             ], 404);
         }
 
-        // Check if already checked in
+
         if ($peserta->is_checked_in) {
             return response()->json([
                 'success' => false,
@@ -87,7 +86,7 @@ class PesertaController extends Controller
             ], 400);
         }
 
-        // Check if payment status is paid
+
         if ($peserta->status_pembayaran !== 'paid') {
             return response()->json([
                 'success' => false,
@@ -95,7 +94,7 @@ class PesertaController extends Controller
             ], 400);
         }
 
-        // Process check-in
+
         $peserta->update([
             'is_checked_in' => true,
             'check_in_time' => now(),
