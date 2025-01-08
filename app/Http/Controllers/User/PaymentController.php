@@ -143,28 +143,46 @@ class PaymentController extends Controller
             // Log raw notification untuk debugging
             \Log::info('Raw Notification:', request()->all());
 
+            // Validasi request yang masuk
+            if (!request()->all()) {
+                \Log::warning('Empty notification received');
+                return response()->json(['message' => 'OK'], 200); // Tetap return 200 untuk keamanan
+            }
+
+            // Validasi field-field yang diperlukan
+            $requiredFields = ['order_id', 'transaction_status', 'transaction_id'];
+            foreach ($requiredFields as $field) {
+                if (!request($field)) {
+                    \Log::warning('Missing required field:', ['field' => $field]);
+                    return response()->json(['message' => 'OK'], 200);
+                }
+            }
+
             DB::beginTransaction();
 
-            // Ambil data dari request langsung, bukan dari Notification class
+            // Ambil data dari request
             $order_id = request('order_id');
             $transaction_status = request('transaction_status');
             $transaction_id = request('transaction_id');
-            $payment_type = request('payment_type');
-            $gross_amount = request('gross_amount');
+            $payment_type = request('payment_type', 'unknown'); // Default value jika kosong
+            $gross_amount = request('gross_amount', 0); // Default value jika kosong
 
-            // Extract peserta_id dari order_id
-            $peserta_id = explode('-', $order_id)[1] ?? null;
-
-            if (!$peserta_id) {
-                \Log::error('Invalid order_id format:', ['order_id' => $order_id]);
-                return response()->json(['message' => 'Invalid order ID format'], 400);
+            // Extract peserta_id dari order_id dengan validasi lebih aman
+            $order_parts = explode('-', $order_id);
+            if (count($order_parts) < 2 || !is_numeric($order_parts[1])) {
+                \Log::warning('Invalid order_id format:', ['order_id' => $order_id]);
+                return response()->json(['message' => 'OK'], 200);
             }
 
+            $peserta_id = $order_parts[1];
             $peserta = Peserta::find($peserta_id);
 
             if (!$peserta) {
-                \Log::error('Peserta tidak ditemukan:', ['order_id' => $order_id, 'peserta_id' => $peserta_id]);
-                return response()->json(['message' => 'Peserta tidak ditemukan'], 404);
+                \Log::warning('Peserta tidak ditemukan:', [
+                    'order_id' => $order_id,
+                    'peserta_id' => $peserta_id
+                ]);
+                return response()->json(['message' => 'OK'], 200);
             }
 
             $oldStatus = $peserta->status_pembayaran;
@@ -189,22 +207,23 @@ class PaymentController extends Controller
                 'payment_date' => now(),
                 'midtrans_transaction_id' => $transaction_id,
                 'midtrans_payment_type' => $payment_type,
-                'amount' => $gross_amount
+                'amount' => $gross_amount ?: $peserta->amount // Gunakan amount yang ada jika gross_amount kosong
             ]);
 
             if ($status === 'paid' && $oldStatus !== 'paid') {
                 try {
                     Mail::to($peserta->email)->send(new PaymentNotification($peserta));
                 } catch (\Exception $e) {
-                    \Log::error('Error mengirim email:', [
+                    \Log::warning('Error mengirim email:', [
                         'peserta_id' => $peserta->id,
                         'error' => $e->getMessage()
                     ]);
+                    // Tetap lanjut meski email gagal
                 }
             }
 
             DB::commit();
-            return response()->json(['message' => 'Notifikasi berhasil diproses']);
+            return response()->json(['message' => 'OK'], 200);
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -213,7 +232,8 @@ class PaymentController extends Controller
                 'trace' => $e->getTraceAsString(),
                 'request' => request()->all()
             ]);
-            return response()->json(['message' => 'Gagal memproses notifikasi'], 500);
+            // Selalu return 200 untuk keamanan
+            return response()->json(['message' => 'OK'], 200);
         }
     }
 
