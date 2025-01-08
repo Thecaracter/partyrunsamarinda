@@ -15,8 +15,8 @@ class RegistrasiController extends Controller
     {
         $sizes = Size::where('stock', '>', 0)->get();
         $registrationFee = number_format(config('registration.fee'), 0, ',', '.');
-        // return view('user.registrasi', compact('sizes', 'registrationFee'));
-        return view('maintenace', compact('sizes', 'registrationFee'));
+        return view('user.registrasi', compact('sizes', 'registrationFee'));
+        // return view('maintenace', compact('sizes', 'registrationFee'));
     }
 
     public function getProvinces()
@@ -104,7 +104,7 @@ class RegistrasiController extends Controller
                     'required',
                     'string',
                     'regex:/^(\+62|62|0)[0-9]{9,12}$/',
-                    'unique:pesertas,no_wa'
+                    'unique:peserta,no_wa'
                 ],
                 'usia' => 'required|numeric|min:1|max:150',
                 'kategori' => 'required|in:Pelajar,Umum,Master',
