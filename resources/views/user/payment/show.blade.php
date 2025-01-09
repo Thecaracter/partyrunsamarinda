@@ -371,6 +371,38 @@
                     header.classList.remove('shadow-md');
                 }
             });
+
+            async function updateStatus(status, result = {}) {
+                showLoading();
+                try {
+                    const response = await fetch('/payment/{{ $peserta->id }}/update-status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            transaction_status: status,
+                            transaction_id: result.transaction_id,
+                            payment_type: result.payment_type,
+                            gross_amount: result.gross_amount
+                        })
+                    });
+
+                    if (!response.ok) throw new Error('Gagal mengupdate status');
+
+                    if (status !== 'cancelled') {
+                        window.location.href =
+                            '{{ route('check-order.index') }}?kode_bib={{ $peserta->kode_bib }}';
+                    }
+                } catch (error) {
+                    console.error('Error updating status:', error);
+                    alert('Terjadi kesalahan saat mengupdate status');
+                } finally {
+                    hideLoading();
+                }
+            }
         });
     </script>
 @endpush
