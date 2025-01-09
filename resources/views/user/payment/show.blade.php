@@ -330,11 +330,9 @@
                     },
                     onPending: async function(result) {
                         currentStatus = 'pending';
-                        await updateStatus('pending', result);
                     },
                     onError: async function(result) {
                         currentStatus = 'failed';
-                        await updateStatus('failed', result);
                     },
                     onClose: function() {
 
