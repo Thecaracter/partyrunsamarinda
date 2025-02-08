@@ -139,7 +139,34 @@
                                 @endswitch
                             </div>
                         </div>
-
+                        @if ($peserta->status_pembayaran === 'paid')
+                        <div class="mt-10 pt-10 border-t">
+                            <div class="max-w-2xl mx-auto text-center">
+                                <h3 class="text-2xl font-bold text-gray-900 mb-4">Nomor BIB Anda</h3>
+                                
+                                <div class="bg-blue-50 p-8 rounded-lg mb-8">
+                                    <p class="text-5xl font-bold text-blue-600">{{ $peserta->kode_bib }}</p>
+                                </div>
+                                
+                                <div class="mb-8">
+                                    <div class="flex justify-center">
+                                        <div class="bg-white p-4 rounded-lg shadow-md">
+                                            <div id="qrcode"></div>
+                                        </div>
+                                    </div>
+                                    <p class="mt-4 text-gray-600">Scan QR code ini untuk yang berisi BIB anda</p>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+                        <script>
+                            new QRCode(document.getElementById("qrcode"), {
+                                text: "{{ $peserta->kode_bib }}",
+                                width: 192,
+                                height: 192
+                            });
+                        </script>
+                    @endif
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <!-- Personal Info -->
                             <div class="space-y-6">
@@ -259,27 +286,6 @@
                                 @endif
                             </div>
                         </div>
-
-                        <!-- BIB Download Section for Paid Status -->
-                        {{-- @if ($peserta->status_pembayaran === 'paid')
-                            <div class="mt-10 pt-10 border-t">
-                                <div class="max-w-2xl mx-auto text-center">
-                                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Download Nomor BIB Anda</h3>
-                                    <p class="text-gray-600 mb-6">
-                                        Silakan download dan cetak nomor BIB Anda dan bawa pada saat Registrasi ulang
-                                    </p>
-                                    <a href="{{ route('bib.show', $peserta->id) }}"
-                                        class="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all duration-200 transform hover:scale-105">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
-                                        </svg>
-                                        Lihat & Cetak BIB Number
-                                    </a>
-                                </div>
-                            </div>
-                        @endif --}}
                     </div>
                 @endif
             </div>

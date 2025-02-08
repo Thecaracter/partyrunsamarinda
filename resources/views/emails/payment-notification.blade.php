@@ -49,6 +49,26 @@
                 </span>
             </div>
 
+            @if ($peserta->status_pembayaran === 'paid')
+            <!-- BIB Number and QR Code Section -->
+            <div style="background: white; border-radius: 1rem; padding: 20px 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;">
+                <h3 style="color: #3171DC; font-size: clamp(18px, 4vw, 20px); font-weight: bold; margin-top: 0; margin-bottom: 15px;">
+                    Nomor BIB Anda
+                </h3>
+                <div style="background: #EFF6FF; padding: 20px; border-radius: 1rem; margin-bottom: 20px;">
+                    <p style="font-size: 36px; font-weight: bold; color: #3171DC; margin: 0;">{{ $peserta->kode_bib }}</p>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <div style="background: white; padding: 15px; display: inline-block; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=192x192&data={{ urlencode($peserta->kode_bib) }}" 
+                             alt="QR Code for BIB {{ $peserta->kode_bib }}"
+                             style="width: 192px; height: 192px;">
+                    </div>
+                    <p style="color: #6b7280; margin-top: 10px; font-size: 14px;">Scan QR code ini untuk BIB anda</p>
+                </div>
+            </div>
+            @endif
+
             <!-- Data Diri Section -->
             <div
                 style="background: white; border-radius: 1rem; padding: 20px 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
@@ -144,7 +164,6 @@
                     style="color: white; text-decoration: none; word-break: break-all;">partycolorbderma@gmail.com</a>
             </p>
         </div>
-    </div>
     </div>
 </body>
 
