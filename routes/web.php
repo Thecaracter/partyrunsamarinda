@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PesertaController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\CheckOrderController;
 use App\Http\Controllers\User\RegistrasiController;
+use App\Http\Controllers\User\UserScannerController;
 
 // Landing Page
 Route::view('/', 'user.landing')->name('home');
@@ -23,6 +24,9 @@ Route::get('/event', function () {
 Route::get('/rules', function () {
     return view('user.rules');
 })->name('rules');
+
+Route::get('/scan', [UserScannerController::class, 'index'])->name('scan.index');
+Route::get('/scan/bib-card/{number}', [UserScannerController::class, 'getBibCard'])->name('scan.getBibCard');
 // Registrasi Routes
 Route::prefix('registrasi')->group(function () {
     Route::get('/', [RegistrasiController::class, 'index'])->name('registrasi.index');
