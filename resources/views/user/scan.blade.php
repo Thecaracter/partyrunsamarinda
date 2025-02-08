@@ -433,7 +433,7 @@
 
     <div class="container">
         <div class="logo">
-            <img src="{{ asset('images/logo.png') }}" alt="Party Run Logo">
+            <img src="{{ asset('Images/logo.png') }}" alt="Party Run Logo">
             <div class="social-links">
                 <a href="https://instagram.com/party.run.smr" target="_blank">
                     <i class="fab fa-instagram"></i>
