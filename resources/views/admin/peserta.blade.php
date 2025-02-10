@@ -1316,11 +1316,12 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
+
                     body: JSON.stringify({
                         kode_bib: bibNumber
                     })
                 });
-
+console.log(bibNumber);
                 const result = await response.json();
 
                 if (response.ok) {
