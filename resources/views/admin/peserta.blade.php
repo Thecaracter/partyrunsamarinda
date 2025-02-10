@@ -465,7 +465,24 @@
             <!-- Participant Tables Section -->
             <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div class="px-4 sm:px-6 lg:px-8 py-6">
+                    
                     <!-- Tabs -->
+                    <div class="mb-4 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+                        <div class="w-full sm:w-1/2">
+                            <div class="relative">
+                                <input 
+                                    type="text" 
+                                    id="searchInput" 
+                                    placeholder="Cari Peserta (Nama, BIB, Kategori)" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                                    oninput="searchParticipants()"
+                                >
+                                <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="border-b border-gray-200">
                         <nav class="-mb-px flex space-x-8">
                             <button onclick="switchTab('checkedIn')" class="tab-btn active" id="checkedInTab">
@@ -1365,5 +1382,100 @@ console.log(bibNumber);
                 currentStream.getTracks().forEach(track => track.stop());
             }
         });
+        function searchParticipants() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    const checkedInBody = document.getElementById('checkedInTableBody');
+    const notCheckedInBody = document.getElementById('notCheckedInTableBody');
+    
+    if (!checkedInBody || !notCheckedInBody) {
+        console.error('Table body elements not found');
+        return;
+    }
+
+    const checkedInRows = checkedInBody.getElementsByTagName('tr');
+    const notCheckedInRows = notCheckedInBody.getElementsByTagName('tr');
+
+    let checkedInVisibleCount = 0;
+    let notCheckedInVisibleCount = 0;
+
+    // Pencarian di tabel Checked In
+    for (let row of checkedInRows) {
+        const cells = row.getElementsByTagName('td');
+        if (cells.length < 3) continue;
+
+        const bibCell = cells[0].textContent ? cells[0].textContent.toLowerCase() : '';
+        const nameCell = cells[1].textContent ? cells[1].textContent.toLowerCase() : '';
+        const categoryCell = cells[2].textContent ? cells[2].textContent.toLowerCase() : '';
+
+        const isVisible = searchTerm === '' || 
+            bibCell.includes(searchTerm) || 
+            nameCell.includes(searchTerm) || 
+            categoryCell.includes(searchTerm);
+
+        row.style.display = isVisible ? '' : 'none';
+        
+        if (isVisible) checkedInVisibleCount++;
+    }
+
+    // Pencarian di tabel Not Checked In
+    for (let row of notCheckedInRows) {
+        const cells = row.getElementsByTagName('td');
+        if (cells.length < 3) continue;
+
+        const bibCell = cells[0].textContent ? cells[0].textContent.toLowerCase() : '';
+        const nameCell = cells[1].textContent ? cells[1].textContent.toLowerCase() : '';
+        const categoryCell = cells[2].textContent ? cells[2].textContent.toLowerCase() : '';
+
+        const isVisible = searchTerm === '' || 
+            bibCell.includes(searchTerm) || 
+            nameCell.includes(searchTerm) || 
+            categoryCell.includes(searchTerm);
+
+        row.style.display = isVisible ? '' : 'none';
+
+        if (isVisible) notCheckedInVisibleCount++;
+    }
+
+    // Update counter untuk tab yang aktif
+    const checkedInCountSpan = document.getElementById('checkedInCount');
+    const notCheckedInCountSpan = document.getElementById('notCheckedInCount');
+
+    if (currentTab === 'checkedIn' && checkedInCountSpan) {
+        checkedInCountSpan.textContent = checkedInVisibleCount;
+    } else if (notCheckedInCountSpan) {
+        notCheckedInCountSpan.textContent = notCheckedInVisibleCount;
+    }
+
+    // Tampilkan pesan jika tidak ada hasil
+    function ensureEmptyMessage(tableBody, tableName) {
+        let emptyRow = document.getElementById(`${tableName}EmptyMessage`);
+        if (!emptyRow) {
+            emptyRow = createEmptyMessage(tableBody, 'Tidak ada peserta ditemukan');
+        }
+
+        const rows = tableBody.getElementsByTagName('tr');
+        const isTableEmpty = Array.from(rows).every(row => row.style.display === 'none');
+        emptyRow.style.display = isTableEmpty ? 'table-row' : 'none';
+    }
+
+    ensureEmptyMessage(checkedInBody, 'checkedIn');
+    ensureEmptyMessage(notCheckedInBody, 'notCheckedIn');
+}
+
+function createEmptyMessage(tableBody, message) {
+    const emptyRow = document.createElement('tr');
+    emptyRow.id = tableBody.id === 'checkedInTableBody' ? 'checkedInEmptyMessage' : 'notCheckedInEmptyMessage';
+    emptyRow.style.display = 'none';
+    
+    const emptyCell = document.createElement('td');
+    emptyCell.colSpan = 5;  // Sesuaikan dengan jumlah kolom
+    emptyCell.className = 'text-center text-gray-500 py-4';
+    emptyCell.textContent = message;
+    
+    emptyRow.appendChild(emptyCell);
+    tableBody.appendChild(emptyRow);
+    
+    return emptyRow;
+}
     </script>
 @endpush
